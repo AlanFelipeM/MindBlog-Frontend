@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { Mail, Clock, Eye, Heart, ArrowRight } from 'lucide-react';
+import { useAuth } from '../../contexts/AuthContext';
 import './styles.css';
 
 interface Article {
@@ -98,11 +99,13 @@ const MOCK_ARTICLES: Article[] = [
 const CATEGORIES = ['Todos', 'Desenvolvimento web', 'DevOps', 'Inteligência Artificial', 'Mobile', 'Design'];
 
 export const Home = () => {
+  const { isAuthenticated } = useAuth();
   const [articles, setArticles] = useState<Article[]>([]);
-  const [selectedCategory, setSelectedCategory] = useState('Todos');
+  const [selectedCategory, setSelectedCategory] = useState<string>('Todos');
   const [newsletterEmail, setNewsletterEmail] = useState('');
   const [newsletterSuccess, setNewsletterSuccess] = useState(false);
-  
+
+  // Referência para rolagem suave até a seção de artigos
   const articlesSectionRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -178,7 +181,7 @@ export const Home = () => {
             <Link to="/artigos" className="btn-hero-primary">
               Explorar Artigos
             </Link>
-            <Link to="/register" className="btn-hero-outline">
+            <Link to={isAuthenticated ? '/artigos/novo' : '/register'} className="btn-hero-outline">
               Começar a Escrever
             </Link>
           </div>
