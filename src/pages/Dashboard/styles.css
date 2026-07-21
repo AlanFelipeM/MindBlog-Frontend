@@ -393,3 +393,85 @@
   align-items: center;
   gap: 0.35rem;
 }
+
+/* Modal de Confirmação de Exclusão de Artigo (Fiel a Excluir Artigo.png) */
+.delete-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 1.5rem;
+}
+
+.delete-modal-card {
+  background-color: #0B0E13 !important;
+  background: #0B0E13 !important;
+  border: 1px solid #272C35;
+  border-radius: 0px; /* Cantos 100% retos */
+  width: 100%;
+  max-width: 520px;
+  padding: 2.25rem 2.5rem;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+}
+
+.delete-modal-title {
+  font-size: 22px;
+  font-weight: 500;
+  color: #FFFFFF;
+  margin-bottom: 0.75rem;
+}
+
+.delete-modal-description {
+  font-size: 14px;
+  font-weight: 300;
+  color: #94A3B8;
+  line-height: 1.5;
+  margin-bottom: 2rem;
+}
+
+.delete-modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 1rem;
+}
+
+.btn-modal-cancel {
+  background-color: #1E242D !important;
+  border: 1px solid #272C35;
+  color: #FFFFFF;
+  padding: 0.7rem 1.5rem;
+  font-size: 14px;
+  font-weight: 400;
+  border-radius: 0px; /* Cantos 100% retos */
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.btn-modal-cancel:hover {
+  border-color: #FFFFFF;
+}
+
+.btn-modal-confirm-delete {
+  background-color: #451A1A;
+  border: 1px solid #991B1B;
+  color: #F87171;
+  padding: 0.7rem 1.5rem;
+  font-size: 14px;
+  font-weight: 400;
+  border-radius: 0px; /* Cantos 100% retos */
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.btn-modal-confirm-delete:hover {
+  background-color: #7F1D1D;
+  border-color: #EF4444;
+  color: #FFFFFF;
+}

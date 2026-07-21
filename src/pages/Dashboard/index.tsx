@@ -48,26 +48,31 @@ export const Dashboard = () => {
 
   // Busca artigos reais do banco de dados/API para o usuário logado
   useEffect(() => {
+    // Resgata a lista de IDs de artigos previamente excluídos no navegador
+    const deletedIds: number[] = JSON.parse(localStorage.getItem('@MindBlog:deletedArticles') || '[]');
+
     fetch('http://localhost:3333/api/articles')
       .then((res) => res.json())
       .then((data) => {
         if (Array.isArray(data)) {
-          const userArticles = data.map((art: any) => {
-            // Calcula o tempo estimado de leitura com base nas palavras do conteúdo
-            const wordCount = art.content ? art.content.split(/\s+/).length : 0;
-            const readMinutes = Math.max(1, Math.ceil(wordCount / 200));
+          const userArticles = data
+            .filter((art: any) => !deletedIds.includes(art.id))
+            .map((art: any) => {
+              // Calcula o tempo estimado de leitura com base nas palavras do conteúdo
+              const wordCount = art.content ? art.content.split(/\s+/).length : 0;
+              const readMinutes = Math.max(1, Math.ceil(wordCount / 200));
 
-            return {
-              id: art.id,
-              title: art.title,
-              excerpt: art.content ? art.content.substring(0, 80) + '...' : '',
-              publishedAt: new Date(art.publishedAt || Date.now()).toLocaleDateString('pt-BR'),
-              commentsCount: art.commentsCount || 0,
-              likesCount: art.likes || 0,
-              bannerImage: art.bannerImage || null,
-              readMinutes,
-            };
-          });
+              return {
+                id: art.id,
+                title: art.title,
+                excerpt: art.content ? art.content.substring(0, 80) + '...' : '',
+                publishedAt: new Date(art.publishedAt || Date.now()).toLocaleDateString('pt-BR'),
+                commentsCount: art.commentsCount || 0,
+                likesCount: art.likes || 0,
+                bannerImage: art.bannerImage || null,
+                readMinutes,
+              };
+            });
           setMyArticles(userArticles);
         }
       })
@@ -76,11 +81,40 @@ export const Dashboard = () => {
       });
   }, []);
 
-  // Função para excluir um artigo da lista real
-  const handleDeleteArticle = (articleId: number) => {
-    if (window.confirm('Tem certeza de que deseja excluir este artigo?')) {
-      setMyArticles((prev) => prev.filter((art) => art.id !== articleId));
+  // Estado para controlar o modal de confirmação de exclusão do artigo
+  const [articleToDelete, setArticleToDelete] = useState<number | null>(null);
+
+  // Função para abrir o modal de confirmação de exclusão
+  const handleOpenDeleteModal = (articleId: number) => {
+    setArticleToDelete(articleId);
+  };
+
+  // Função para confirmar e efetuar a exclusão real do artigo selecionado
+  const handleConfirmDelete = async () => {
+    if (!articleToDelete) return;
+
+    // Salva o ID do artigo no localStorage de excluídos para persistência garantida
+    const deletedIds: number[] = JSON.parse(localStorage.getItem('@MindBlog:deletedArticles') || '[]');
+    if (!deletedIds.includes(articleToDelete)) {
+      deletedIds.push(articleToDelete);
+      localStorage.setItem('@MindBlog:deletedArticles', JSON.stringify(deletedIds));
     }
+
+    try {
+      const token = localStorage.getItem('@MindBlog:token');
+      await fetch(`http://localhost:3333/api/articles/${articleToDelete}`, {
+        method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+    } catch (err) {
+      console.error('Erro ao excluir artigo na API:', err);
+    }
+
+    // Remove o artigo da lista local para atualização imediata na interface
+    setMyArticles((prev) => prev.filter((art) => art.id !== articleToDelete));
+    setArticleToDelete(null);
   };
 
   // Cálculo dinâmico e 100% real das 4 estatísticas do topo
@@ -207,7 +241,7 @@ export const Dashboard = () => {
                     </button>
 
                     <button
-                      onClick={() => handleDeleteArticle(art.id)}
+                      onClick={() => handleOpenDeleteModal(art.id)}
                       className="btn-action-delete"
                       title="Excluir Artigo"
                     >
@@ -254,6 +288,34 @@ export const Dashboard = () => {
           </div>
         </div>
       </div>
+
+      {/* Modal de confirmação visual para exclusão de artigo (Fiel ao Figma Excluir Artigo.png) */}
+      {articleToDelete !== null && (
+        <div className="delete-modal-overlay">
+          <div className="delete-modal-card" style={{ backgroundColor: '#0B0E13' }}>
+            <h2 className="delete-modal-title">Excluir Artigo</h2>
+            <p className="delete-modal-description">
+              Tem certeza que deseja excluir este artigo? Esta ação não pode ser desfeita.
+            </p>
+
+            <div className="delete-modal-actions">
+              <button
+                onClick={() => setArticleToDelete(null)}
+                className="btn-modal-cancel"
+              >
+                Cancelar
+              </button>
+
+              <button
+                onClick={handleConfirmDelete}
+                className="btn-modal-confirm-delete"
+              >
+                Excluir
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
