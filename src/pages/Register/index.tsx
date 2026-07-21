@@ -58,6 +58,7 @@ export const Register = () => {
           />
 
           <Button type="submit" className="auth-submit-btn">
+            <UserPlus size={18} />
             Criar conta
           </Button>
         </form>

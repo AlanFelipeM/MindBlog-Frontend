@@ -51,6 +51,7 @@ export const Login = () => {
           </div>
 
           <Button type="submit" className="auth-submit-btn">
+            <LogIn size={18} />
             Entrar
           </Button>
         </form>

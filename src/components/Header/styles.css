@@ -59,13 +59,26 @@
   opacity: 0.8;
 }
 
-.nav-login {
-  color: var(--brand-primary);
+.auth-actions {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  margin-left: 0.5rem;
 }
 
-.nav-login:hover {
-  color: var(--brand-primary);
-  opacity: 0.8;
+.nav-register {
+  background-color: var(--brand-primary);
+  color: #000;
+  padding: 0.5rem 1.25rem;
+  border-radius: 4px;
+  font-weight: 600;
+  font-size: 14px;
+  transition: all var(--transition-fast);
+}
+
+.nav-register:hover {
+  background-color: var(--brand-hover);
+  opacity: 0.9;
 }
 
 .theme-toggle {
