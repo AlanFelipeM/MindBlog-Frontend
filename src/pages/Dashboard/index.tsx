@@ -42,7 +42,7 @@ export const Dashboard = () => {
 
   // Estados locais para gerenciar os artigos reais do usuário e a atividade recente
   const [myArticles, setMyArticles] = useState<DashboardArticle[]>([]);
-  const [activities] = useState<ActivityItem[]>([]);
+  const [activities, setActivities] = useState<ActivityItem[]>([]);
 
   // Estado para toast de mensagem de sucesso ao publicar/editar artigo
   const [toastMessage, setToastMessage] = useState<string | null>(null);
@@ -61,7 +61,20 @@ export const Dashboard = () => {
     }
   }, []);
 
-  // Busca artigos reais do banco de dados/API para o usuário logado
+  // Função utilitária para formatar tempo decorrido de comentários
+  const formatTimeAgo = (dateStr: string) => {
+    if (!dateStr) return 'recente';
+    const diffMs = Date.now() - new Date(dateStr).getTime();
+    const diffMins = Math.floor(diffMs / 60000);
+    if (diffMins < 1) return 'agora mesmo';
+    if (diffMins < 60) return `${diffMins} min atrás`;
+    const diffHours = Math.floor(diffMins / 60);
+    if (diffHours < 24) return `${diffHours}h atrás`;
+    const diffDays = Math.floor(diffHours / 24);
+    return `${diffDays}d atrás`;
+  };
+
+  // Busca artigos reais do banco de dados/API para o usuário logado e processa comentários/curtidas reais
   useEffect(() => {
     // Resgata a lista de IDs de artigos previamente excluídos no navegador
     const deletedIds: number[] = JSON.parse(localStorage.getItem('@MindBlog:deletedArticles') || '[]');
@@ -70,9 +83,30 @@ export const Dashboard = () => {
       .then((res) => res.json())
       .then((data) => {
         if (Array.isArray(data)) {
+          const allActivitiesList: ActivityItem[] = [];
+
           const userArticles = data
             .filter((art: any) => !deletedIds.includes(art.id))
             .map((art: any) => {
+              // Resgata os comentários dinâmicos salvos para este artigo
+              const storedComments: any[] = JSON.parse(localStorage.getItem(`@MindBlog:comments_${art.id}`) || '[]');
+
+              // Alimenta a lista de Atividades Recentes com os comentários reais do artigo
+              storedComments.forEach((c) => {
+                allActivitiesList.push({
+                  id: c.id,
+                  userName: c.authorName,
+                  userAvatar: c.authorAvatar || "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23A1A1AA'%3E%3Cpath d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z'/%3E%3C/svg%3E",
+                  articleTitle: art.title,
+                  timeAgo: formatTimeAgo(c.date),
+                });
+              });
+
+              // Resgata as curtidas do próprio artigo e dos comentários
+              const articleLikes = Number(localStorage.getItem(`@MindBlog:article_likes_${art.id}`)) || art.likes || 0;
+              const commentLikes = storedComments.reduce((sum, c) => sum + (c.likes || 0), 0);
+              const totalArticleLikes = articleLikes + commentLikes;
+
               // Calcula o tempo estimado de leitura com base nas palavras do conteúdo
               const wordCount = art.content ? art.content.split(/\s+/).length : 0;
               const readMinutes = Math.max(1, Math.ceil(wordCount / 200));
@@ -82,13 +116,30 @@ export const Dashboard = () => {
                 title: art.title,
                 excerpt: art.content ? art.content.substring(0, 80) + '...' : '',
                 publishedAt: new Date(art.publishedAt || Date.now()).toLocaleDateString('pt-BR'),
-                commentsCount: art.commentsCount || 0,
-                likesCount: art.likes || 0,
+                commentsCount: storedComments.length + (art.commentsCount || 0),
+                likesCount: totalArticleLikes,
                 bannerImage: art.bannerImage || null,
                 readMinutes,
               };
             });
+
           setMyArticles(userArticles);
+
+          // Também verifica se há comentários em artigos simulados (ID 1)
+          const mockComments: any[] = JSON.parse(localStorage.getItem('@MindBlog:comments_1') || '[]');
+          mockComments.forEach((c) => {
+            if (!allActivitiesList.some((item) => item.id === c.id)) {
+              allActivitiesList.push({
+                id: c.id,
+                userName: c.authorName,
+                userAvatar: c.authorAvatar || "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23A1A1AA'%3E%3Cpath d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z'/%3E%3C/svg%3E",
+                articleTitle: 'O Futuro da Inteligência Artificial em 2025',
+                timeAgo: formatTimeAgo(c.date),
+              });
+            }
+          });
+
+          setActivities(allActivitiesList);
         }
       })
       .catch(() => {

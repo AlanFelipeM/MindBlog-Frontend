@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import { ArrowLeft, Heart, Bookmark, Share2, Clock, Eye, MessageSquare, User } from 'lucide-react';
+import { ArrowLeft, Heart, Bookmark, Share2, Clock, Eye, MessageSquare, User, Edit, Trash2, Check, X as CancelIcon } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import './styles.css';
 
@@ -98,6 +98,14 @@ export const ArticleDetail = () => {
   const [loading, setLoading] = useState(true);
   const [comments, setComments] = useState<Comment[]>([]);
   const [newCommentContent, setNewCommentContent] = useState('');
+
+  // Estados para edição de comentários
+  const [editingCommentId, setEditingCommentId] = useState<number | null>(null);
+  const [editingContent, setEditingContent] = useState('');
+
+  // Estados para curtidas dinâmicas no próprio artigo
+  const [articleLikes, setArticleLikes] = useState<number>(0);
+  const [isLikedArticle, setIsLikedArticle] = useState<boolean>(false);
 
   useEffect(() => {
     // Carrega comentários salvos previamente para este artigo no localStorage
@@ -198,6 +206,47 @@ export const ArticleDetail = () => {
     });
   };
 
+  // Iniciar modo de edição de um comentário
+  const handleStartEditComment = (comment: Comment) => {
+    setEditingCommentId(comment.id);
+    setEditingContent(comment.content);
+  };
+
+  // Salvar a alteração do comentário editado
+  const handleSaveEditComment = (commentId: number) => {
+    if (!editingContent.trim()) return;
+    setComments((prev) => {
+      const updated = prev.map((c) => (c.id === commentId ? { ...c, content: editingContent } : c));
+      if (id) {
+        localStorage.setItem(`@MindBlog:comments_${id}`, JSON.stringify(updated));
+      }
+      return updated;
+    });
+    setEditingCommentId(null);
+    setEditingContent('');
+  };
+
+  // Excluir um comentário
+  const handleDeleteComment = (commentId: number) => {
+    setComments((prev) => {
+      const updated = prev.filter((c) => c.id !== commentId);
+      if (id) {
+        localStorage.setItem(`@MindBlog:comments_${id}`, JSON.stringify(updated));
+      }
+      return updated;
+    });
+  };
+
+  // Curte/descurte o artigo e persiste a alteração de curtidas
+  const handleLikeArticle = () => {
+    const nextLikes = isLikedArticle ? Math.max(0, articleLikes - 1) : articleLikes + 1;
+    setArticleLikes(nextLikes);
+    setIsLikedArticle(!isLikedArticle);
+    if (id) {
+      localStorage.setItem(`@MindBlog:article_likes_${id}`, String(nextLikes));
+    }
+  };
+
   // Função auxiliar para formatação de data no padrão DD/MM/YYYY
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
@@ -263,8 +312,13 @@ export const ArticleDetail = () => {
           </div>
 
           <div className="article-quick-actions">
-            <button className="action-btn" aria-label="Curtir artigo">
-              <Heart size={18} />
+            <button 
+              onClick={handleLikeArticle} 
+              className={`action-btn ${isLikedArticle ? 'liked' : ''}`} 
+              aria-label="Curtir artigo"
+              title="Curtir artigo"
+            >
+              <Heart size={18} fill={isLikedArticle ? '#EF4444' : 'none'} color={isLikedArticle ? '#EF4444' : 'currentColor'} />
             </button>
             <button className="action-btn" aria-label="Salvar artigo">
               <Bookmark size={18} />
@@ -277,7 +331,7 @@ export const ArticleDetail = () => {
 
         {/* Métricas secundárias abaixo da caixa do autor */}
         <div className="article-stats-row">
-          <span className="stat-item"><Heart size={14} /> {article.likes} curtidas</span>
+          <span className="stat-item"><Heart size={14} /> {articleLikes} curtidas</span>
           <span className="stat-item"><Eye size={14} /> {article.views} visualizações</span>
           <span className="stat-item"><MessageSquare size={14} /> {comments.length} comentários</span>
         </div>
@@ -362,15 +416,65 @@ export const ArticleDetail = () => {
                     </div>
                   </div>
 
-                  <button 
-                    onClick={() => handleLikeComment(comment.id)} 
-                    className="comment-like-btn"
-                    aria-label="Curtir comentário"
-                  >
-                    <Heart size={14} /> {comment.likes}
-                  </button>
+                  {/* Ações do comentário: Curtir, Editar e Excluir */}
+                  <div className="comment-actions-box">
+                    <button 
+                      onClick={() => handleLikeComment(comment.id)} 
+                      className="comment-like-btn"
+                      aria-label="Curtir comentário"
+                      title="Curtir"
+                    >
+                      <Heart size={14} /> {comment.likes}
+                    </button>
+
+                    {isAuthenticated && (
+                      <>
+                        <button
+                          onClick={() => handleStartEditComment(comment)}
+                          className="comment-action-btn edit-comment-btn"
+                          title="Editar comentário"
+                        >
+                          <Edit size={14} />
+                        </button>
+
+                        <button
+                          onClick={() => handleDeleteComment(comment.id)}
+                          className="comment-action-btn delete-comment-btn"
+                          title="Excluir comentário"
+                        >
+                          <Trash2 size={14} />
+                        </button>
+                      </>
+                    )}
+                  </div>
                 </div>
-                <p className="comment-body-text">{comment.content}</p>
+
+                {/* Exibição normal ou modo de edição inline */}
+                {editingCommentId === comment.id ? (
+                  <div className="comment-edit-inline-form">
+                    <textarea
+                      className="comment-textarea edit-inline-textarea"
+                      value={editingContent}
+                      onChange={(e) => setEditingContent(e.target.value)}
+                    />
+                    <div className="comment-edit-inline-actions">
+                      <button
+                        onClick={() => handleSaveEditComment(comment.id)}
+                        className="btn-save-comment-edit"
+                      >
+                        <Check size={14} /> Salvar
+                      </button>
+                      <button
+                        onClick={() => setEditingCommentId(null)}
+                        className="btn-cancel-comment-edit"
+                      >
+                        <CancelIcon size={14} /> Cancelar
+                      </button>
+                    </div>
+                  </div>
+                ) : (
+                  <p className="comment-body-text">{comment.content}</p>
+                )}
               </div>
             ))}
           </div>
