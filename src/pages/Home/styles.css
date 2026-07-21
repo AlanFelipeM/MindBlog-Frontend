@@ -174,8 +174,6 @@
   gap: 0.25rem;
   background: none;
   border: none;
-  border-bottom: 1px solid var(--brand-primary);
-  padding-bottom: 2px;
   cursor: pointer;
   transition: opacity var(--transition-fast);
 }

@@ -70,7 +70,7 @@
   background-color: var(--brand-primary);
   color: #000;
   padding: 0.5rem 1.25rem;
-  border-radius: 4px;
+  border-radius: 0px;
   font-weight: 600;
   font-size: 14px;
   transition: all var(--transition-fast);
@@ -78,7 +78,6 @@
 
 .nav-register:hover {
   background-color: var(--brand-hover);
-  opacity: 0.9;
 }
 
 .theme-toggle {
