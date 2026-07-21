@@ -6,6 +6,7 @@ import { Register } from './pages/Register';
 import { Home } from './pages/Home';
 import { ArticleDetail } from './pages/ArticleDetail';
 import { Articles } from './pages/Articles';
+import { Settings } from './pages/Settings';
 
 // Layout component to wrap pages with Header and Footer
 function BaseLayout() {
@@ -27,6 +28,7 @@ export default function App() {
         <Route path="/" element={<Home />} />
         <Route path="/artigos" element={<Articles />} />
         <Route path="/artigos/:id" element={<ArticleDetail />} />
+        <Route path="/configuracoes" element={<Settings />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         {/* We will add more routes here in future phases */}
