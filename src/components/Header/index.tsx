@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Moon } from 'lucide-react';
+import { Moon, Sun } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import './styles.css';
 
@@ -19,6 +19,22 @@ export const Header = () => {
 
   // Estado para controlar a abertura/fechamento do menu dropdown do usuário
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+  // Estado do tema visual (escuro/claro) com salvamento no localStorage
+  const [theme, setTheme] = useState<'dark' | 'light'>(() => {
+    return (localStorage.getItem('@MindBlog:theme') as 'dark' | 'light') || 'dark';
+  });
+
+  // Atualiza o atributo data-theme na tag <html> para alterar todas as variáveis CSS do site
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem('@MindBlog:theme', theme);
+  }, [theme]);
+
+  // Alterna o tema entre escuro e claro
+  const toggleTheme = () => {
+    setTheme((prev) => (prev === 'dark' ? 'light' : 'dark'));
+  };
 
   // Referência para detectar cliques fora do menu e fechar o dropdown automaticamente
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -70,8 +86,13 @@ export const Header = () => {
           <div className="header-divider" />
 
           {/* Botão de alternância de tema */}
-          <button className="theme-toggle" aria-label="Alternar Tema">
-            <Moon size={20} />
+          <button 
+            className="theme-toggle" 
+            onClick={toggleTheme}
+            aria-label="Alternar Tema Escuro e Claro"
+            title={theme === 'dark' ? "Mudar para Tema Claro" : "Mudar para Tema Escuro"}
+          >
+            {theme === 'dark' ? <Moon size={20} /> : <Sun size={20} color="#EAB308" />}
           </button>
 
           {/* Renderização condicional do perfil quando logado ou botões de entrar/cadastrar */}
