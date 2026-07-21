@@ -10,9 +10,9 @@ export const Login = () => {
 
   const handleLogin = (e: FormEvent) => {
     e.preventDefault();
-    // API Call will go here later
+    // A chamada da API para autenticação será implementada futuramente neste método
     console.log('Login attempt');
-    navigate('/dashboard');
+    navigate('/');
   };
 
   return (
@@ -43,7 +43,7 @@ export const Login = () => {
               </Link>
             </div>
             <Input 
-              label="" /* Label removed because we use custom header above */
+              label="" /* Rótulo removido porque utilizamos um cabeçalho customizado para a senha logo acima */
               type="password" 
               placeholder="********" 
               required 

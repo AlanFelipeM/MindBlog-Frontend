@@ -13,7 +13,7 @@ interface Article {
     name: string;
     email: string;
   };
-  // Calculated or fallback metrics
+  // Métricas calculadas dinamicamente ou geradas por amostragem
   category?: string;
   readTime?: string;
   views?: number;
@@ -43,7 +43,7 @@ const MOCK_ARTICLES: Article[] = [
     category: 'Desenvolvimento web',
     readTime: '6min',
     views: 122,
-    likes: 95 // Most liked, will be active/highlighted
+    likes: 95 // Artigo com maior quantidade de curtidas, utilizado para destaque ativo
   },
   {
     id: 3,
@@ -110,7 +110,7 @@ export const Home = () => {
       .then((res) => res.json())
       .then((data) => {
         if (Array.isArray(data) && data.length > 0) {
-          // Add computed fields to database items
+          // Adiciona propriedades simuladas para os posts carregados da API do banco de dados
           const enriched = data.map((art: any) => {
             const wordCount = art.content ? art.content.split(/\s+/).length : 0;
             const readMinutes = Math.max(1, Math.ceil(wordCount / 200));
@@ -151,25 +151,25 @@ export const Home = () => {
     return `${date.getDate()} ${months[date.getMonth()]} ${date.getFullYear()}`;
   };
 
-  // Filter logic
+  // Lógica de filtragem dos artigos baseada na categoria selecionada
   const filteredArticles = selectedCategory === 'Todos'
     ? articles
     : articles.filter(art => art.category === selectedCategory);
 
-  // Sorting
-  // Artigos em Destaque: Mais curtidos (limit 6)
+  // Ordenações e limites
+  // Artigos em Destaque: Ordenados por curtidas e limitados a 6 itens
   const highlightedArticles = [...filteredArticles]
     .sort((a, b) => (b.likes || 0) - (a.likes || 0))
     .slice(0, 6);
 
-  // Artigos Recentes: Mais recentes (limit 9)
+  // Artigos Recentes: Ordenados pela data de publicação decrescente (máximo 9)
   const recentArticles = [...filteredArticles]
     .sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime())
     .slice(0, 9);
 
   return (
     <div className="home-page">
-      {/* Hero Section */}
+      {/* Seção de Destaque (Hero) da Página Inicial */}
       <section className="hero-section">
         <div className="hero-container">
           <h1 className="hero-title">
@@ -189,7 +189,7 @@ export const Home = () => {
         </div>
       </section>
 
-      {/* Category Filter Bar */}
+      {/* Barra Horizontal de Filtros por Categoria */}
       <div className="category-filter-container" ref={articlesSectionRef}>
         <div className="category-filter-bar">
           {CATEGORIES.map((cat) => (
@@ -204,7 +204,7 @@ export const Home = () => {
         </div>
       </div>
 
-      {/* Artigos em Destaque */}
+      {/* Seção de Artigos em Destaque */}
       <section className="articles-section">
         <div className="section-container">
           <div className="section-header">
@@ -257,7 +257,7 @@ export const Home = () => {
         </div>
       </section>
 
-      {/* Artigos Recentes */}
+      {/* Seção de Artigos Recentes */}
       <section className="articles-section recent-section">
         <div className="section-container">
           <div className="section-header">
@@ -295,7 +295,7 @@ export const Home = () => {
         </div>
       </section>
 
-      {/* Newsletter */}
+      {/* Seção da Newsletter Semanal */}
       <section className="newsletter-section">
         <div className="newsletter-container">
           <div className="newsletter-icon-box">
@@ -330,7 +330,7 @@ export const Home = () => {
         </div>
       </section>
 
-      {/* Call to Action Final */}
+      {/* Seção de Chamada para Ação (CTA) Final */}
       <section className="cta-section">
         <div className="cta-container">
           <h2 className="cta-title">Compartilhe Seu Conhecimento</h2>

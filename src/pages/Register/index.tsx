@@ -3,14 +3,14 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Input } from '../../components/Input';
 import { Button } from '../../components/Button';
 import usersIcon from '../../assets/icones/users.png';
-import '../Login/styles.css'; // Reusing auth styles
+import '../Login/styles.css'; // Reutilizando os estilos globais de autenticação
 
 export const Register = () => {
   const navigate = useNavigate();
 
   const handleRegister = (e: FormEvent) => {
     e.preventDefault();
-    // API Call will go here later
+    // A chamada da API para cadastro será implementada futuramente neste método
     console.log('Register attempt');
     navigate('/login');
   };
@@ -22,7 +22,7 @@ export const Register = () => {
       </div>
       
       <div className="auth-header">
-        {/* Changed from 'Entrar na Plataforma' to 'Criar sua Conta' based on standard UX practices (Melhoria) */}
+        {/* Alterado de 'Entrar na Plataforma' para 'Criar sua Conta' com base em boas práticas de UX (Melhoria) */}
         <h1>Criar sua Conta</h1>
         <p>Acesse sua conta para gerenciar seus artigos</p>
       </div>
