@@ -27,7 +27,23 @@ export const Register = () => {
     setErrorMessage('');
     setSuccessMessage('');
 
-    // Validação de confirmação de senha
+    // Validações de entrada do formulário de cadastro
+    if (name.trim().length < 3) {
+      setErrorMessage('O nome deve conter pelo menos 3 caracteres.');
+      return;
+    }
+
+    const emailRegex = /\S+@\S+\.\S+/;
+    if (!emailRegex.test(email)) {
+      setErrorMessage('Por favor, informe um endereço de e-mail válido.');
+      return;
+    }
+
+    if (password.length < 6) {
+      setErrorMessage('A senha deve conter no mínimo 6 caracteres.');
+      return;
+    }
+
     if (password !== confirmPassword) {
       setErrorMessage('As senhas não coincidem. Digite novamente.');
       return;
