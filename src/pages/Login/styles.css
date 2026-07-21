@@ -37,13 +37,12 @@
 }
 
 .auth-card {
-  background-color: var(--bg-secondary);
+  background-color: transparent;
   border: 1px solid var(--border-color);
-  border-radius: 12px;
+  border-radius: 4px;
   padding: 2.5rem;
   width: 100%;
   max-width: 440px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
 }
 
 .auth-form {
