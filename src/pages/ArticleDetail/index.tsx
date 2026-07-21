@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { ArrowLeft, Heart, Bookmark, Share2, Clock, Eye, MessageSquare, User, Edit, Trash2, Check, X as CancelIcon } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
+import { API_URL } from '../../config/api';
 import './styles.css';
 
 // Interface que descreve a estrutura de um comentário
@@ -178,7 +179,7 @@ export const ArticleDetail = () => {
     const storedCommentsStr = localStorage.getItem(`@MindBlog:comments_${id}`);
 
     // Tenta carregar o artigo a partir da API do backend
-    fetch(`http://localhost:3333/api/articles/${id}`)
+    fetch(`${API_URL}/articles/${id}`)
       .then((res) => {
         if (!res.ok) throw new Error('Artigo não encontrado');
         return res.json();

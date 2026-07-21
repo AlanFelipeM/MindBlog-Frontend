@@ -12,6 +12,7 @@ import {
   CheckCircle 
 } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
+import { API_URL } from '../../config/api';
 import './styles.css';
 
 // Interface que representa a estrutura de um artigo exibido no painel do dashboard
@@ -79,7 +80,7 @@ export const Dashboard = () => {
     // Resgata a lista de IDs de artigos previamente excluídos no navegador
     const deletedIds: number[] = JSON.parse(localStorage.getItem('@MindBlog:deletedArticles') || '[]');
 
-    fetch('http://localhost:3333/api/articles')
+    fetch(`${API_URL}/articles`)
       .then((res) => res.json())
       .then((data) => {
         if (Array.isArray(data)) {
@@ -178,7 +179,7 @@ export const Dashboard = () => {
 
     try {
       const token = localStorage.getItem('@MindBlog:token');
-      await fetch(`http://localhost:3333/api/articles/${articleToDelete}`, {
+      await fetch(`${API_URL}/articles/${articleToDelete}`, {
         method: 'DELETE',
         headers: {
           Authorization: `Bearer ${token}`,

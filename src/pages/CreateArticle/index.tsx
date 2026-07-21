@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { ArrowLeft, X } from 'lucide-react';
+import { API_URL } from '../../config/api';
 import './styles.css';
 
 export const CreateArticle = () => {
@@ -26,7 +27,7 @@ export const CreateArticle = () => {
   // Se estiver em modo de edição, busca os dados do artigo para preencher os campos
   useEffect(() => {
     if (isEditing && id) {
-      fetch(`http://localhost:3333/api/articles`)
+      fetch(`${API_URL}/articles`)
         .then((res) => res.json())
         .then((data) => {
           if (Array.isArray(data)) {
@@ -99,8 +100,8 @@ export const CreateArticle = () => {
     try {
       const token = localStorage.getItem('@MindBlog:token');
       const url = isEditing
-        ? `http://localhost:3333/api/articles/${id}`
-        : 'http://localhost:3333/api/articles';
+        ? `${API_URL}/articles/${id}`
+        : `${API_URL}/articles`;
       const method = isEditing ? 'PUT' : 'POST';
 
       const response = await fetch(url, {

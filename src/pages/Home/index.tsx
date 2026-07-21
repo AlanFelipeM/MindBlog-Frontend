@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { Mail, Clock, Eye, Heart, ArrowRight } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
+import { API_URL } from '../../config/api';
 import './styles.css';
 
 interface Article {
@@ -109,7 +110,7 @@ export const Home = () => {
   const articlesSectionRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    fetch('http://localhost:3333/api/articles')
+    fetch(`${API_URL}/articles`)
       .then((res) => res.json())
       .then((data) => {
         if (Array.isArray(data) && data.length > 0) {

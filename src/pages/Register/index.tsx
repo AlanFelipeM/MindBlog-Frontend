@@ -4,6 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { AlertCircle, CheckCircle } from 'lucide-react';
 import { Input } from '../../components/Input';
 import { Button } from '../../components/Button';
+import { API_URL } from '../../config/api';
 import usersIcon from '../../assets/icones/users.png';
 import '../Login/styles.css';
 
@@ -53,7 +54,7 @@ export const Register = () => {
 
     try {
       // Faz a requisição POST para a API backend de registro de usuários
-      const response = await fetch('http://localhost:3333/api/users/register', {
+      const response = await fetch(`${API_URL}/users/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

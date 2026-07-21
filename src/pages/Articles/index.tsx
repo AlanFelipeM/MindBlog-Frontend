@@ -1,6 +1,7 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Search, Filter, LayoutGrid, List, Clock, Heart, Eye, Bookmark } from 'lucide-react';
+import { Search, Filter, LayoutGrid, List, Clock, Eye, Heart, Bookmark } from 'lucide-react';
+import { API_URL } from '../../config/api';
 import './styles.css';
 
 // Interface que descreve a estrutura de cada artigo na listagem
@@ -149,7 +150,7 @@ export const Articles = () => {
 
   // Busca os artigos da API backend e utiliza os dados simulados caso o servidor não responda
   useEffect(() => {
-    fetch('http://localhost:3333/api/articles')
+    fetch(`${API_URL}/articles`)
       .then((res) => res.json())
       .then((data) => {
         if (Array.isArray(data) && data.length > 0) {

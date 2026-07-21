@@ -5,6 +5,7 @@ import { LogIn, AlertCircle } from 'lucide-react';
 import { Input } from '../../components/Input';
 import { Button } from '../../components/Button';
 import { useAuth } from '../../contexts/AuthContext';
+import { API_URL } from '../../config/api';
 import './styles.css';
 
 export const Login = () => {
@@ -26,7 +27,7 @@ export const Login = () => {
 
     try {
       // Faz a requisição POST para a API do backend
-      const response = await fetch('http://localhost:3333/api/users/login', {
+      const response = await fetch(`${API_URL}/users/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
