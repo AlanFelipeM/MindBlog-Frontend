@@ -8,6 +8,7 @@ import { ArticleDetail } from './pages/ArticleDetail';
 import { Articles } from './pages/Articles';
 import { Settings } from './pages/Settings';
 import { Dashboard } from './pages/Dashboard';
+import { CreateArticle } from './pages/CreateArticle';
 
 // Layout component to wrap pages with Header and Footer
 function BaseLayout() {
@@ -29,6 +30,8 @@ export default function App() {
         <Route path="/" element={<Home />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/artigos" element={<Articles />} />
+        <Route path="/artigos/novo" element={<CreateArticle />} />
+        <Route path="/artigos/editar/:id" element={<CreateArticle />} />
         <Route path="/artigos/:id" element={<ArticleDetail />} />
         <Route path="/configuracoes" element={<Settings />} />
         <Route path="/login" element={<Login />} />

@@ -1,0 +1,296 @@
+/* Container principal da página de Criar Novo Artigo */
+.create-article-page {
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 3rem 1.5rem 6rem 1.5rem;
+}
+
+/* Botão de retorno ao Dashboard */
+.create-article-back-nav {
+  margin-bottom: 2rem;
+}
+
+.btn-back-dashboard {
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  font-size: 14px;
+  font-weight: 400;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  padding: 0;
+  transition: color var(--transition-fast);
+}
+
+.btn-back-dashboard:hover {
+  color: #FFFFFF;
+}
+
+/* Cabeçalho principal com título e subtítulo */
+.create-article-header {
+  margin-bottom: 2.5rem;
+}
+
+.create-article-title {
+  font-family: var(--font-sans);
+  font-size: 38px;
+  font-weight: 500;
+  color: #FFFFFF;
+  line-height: 1.2;
+  margin-bottom: 0.35rem;
+}
+
+.create-article-subtitle {
+  font-size: 15px;
+  font-weight: 300;
+  color: var(--text-secondary);
+}
+
+/* Wrapper do formulário */
+.create-article-form-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+/* Card retangular principal do formulário */
+.create-article-card {
+  background-color: transparent;
+  border: 1px solid #272C35;
+  border-radius: 0px; /* Cantos 100% retos */
+  padding: 2.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+}
+
+@media (max-width: 640px) {
+  .create-article-card {
+    padding: 1.5rem;
+  }
+}
+
+/* Grupos de formulário */
+.article-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.article-form-label {
+  font-size: 14px;
+  font-weight: 500;
+  color: #FFFFFF;
+}
+
+.article-form-input,
+.article-form-select,
+.article-form-textarea {
+  width: 100%;
+  background-color: #14181F;
+  border: 1px solid #272C35;
+  color: #FFFFFF;
+  padding: 0.85rem 1rem;
+  font-size: 14px;
+  font-weight: 400;
+  border-radius: 0px; /* Cantos 100% retos */
+  outline: none;
+  font-family: inherit;
+  transition: border-color var(--transition-fast);
+}
+
+.article-form-input:focus,
+.article-form-select:focus,
+.article-form-textarea:focus {
+  border-color: var(--brand-primary);
+}
+
+.article-form-input::placeholder,
+.article-form-textarea::placeholder {
+  color: var(--text-secondary);
+}
+
+.article-form-select {
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23A1A1AA' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  padding-right: 2.5rem;
+}
+
+.article-form-textarea {
+  resize: vertical;
+}
+
+.short-excerpt {
+  min-height: 90px;
+}
+
+.full-body-textarea {
+  min-height: 260px;
+  line-height: 1.6;
+}
+
+.field-counter {
+  font-size: 12px;
+  font-weight: 300;
+  color: var(--text-secondary);
+  margin-top: 0.25rem;
+}
+
+/* Upload de arquivo do computador */
+.article-file-upload-row {
+  margin-top: 0.35rem;
+}
+
+.btn-upload-file {
+  display: inline-block;
+  background-color: #14181F;
+  border: 1px solid #272C35;
+  color: var(--text-secondary);
+  font-size: 13px;
+  font-weight: 300;
+  padding: 0.5rem 1rem;
+  border-radius: 0px; /* Cantos 100% retos */
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.btn-upload-file:hover {
+  border-color: var(--brand-primary);
+  color: #FFFFFF;
+}
+
+.hidden-file-input {
+  display: none;
+}
+
+/* Área de Tags */
+.tag-input-row {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.tag-input-field {
+  flex: 1;
+}
+
+.btn-add-tag {
+  background-color: #14181F;
+  border: 1px solid #272C35;
+  color: #FFFFFF;
+  padding: 0.85rem 1.25rem;
+  font-size: 14px;
+  font-weight: 400;
+  border-radius: 0px; /* Cantos 100% retos */
+  cursor: pointer;
+  transition: border-color var(--transition-fast);
+}
+
+.btn-add-tag:hover {
+  border-color: var(--brand-primary);
+}
+
+.tags-badges-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.tag-badge-item {
+  background-color: #14181F;
+  border: 1px solid #272C35;
+  color: #FFFFFF;
+  font-size: 12px;
+  font-weight: 400;
+  padding: 0.35rem 0.65rem;
+  border-radius: 0px; /* Cantos 100% retos */
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.btn-remove-tag {
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  transition: color var(--transition-fast);
+}
+
+.btn-remove-tag:hover {
+  color: #EF4444;
+}
+
+/* Estatísticas ao vivo abaixo do conteúdo do artigo */
+.live-stats-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 12px;
+  font-weight: 300;
+  color: var(--text-secondary);
+  margin-top: 0.4rem;
+}
+
+.stats-dot {
+  color: var(--text-secondary);
+}
+
+/* Barra de botões de ação do rodapé */
+.create-article-actions-bar {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.btn-publish-article {
+  flex: 1;
+  background-color: var(--brand-primary); /* Cor ciano #00D8FF */
+  color: #000000;
+  font-weight: 600;
+  font-size: 15px;
+  padding: 0.95rem;
+  border: none;
+  border-radius: 0px; /* Cantos 100% retos */
+  cursor: pointer;
+  transition: background-color var(--transition-fast);
+}
+
+.btn-publish-article:hover {
+  background-color: var(--brand-hover);
+}
+
+.btn-cancel-article {
+  background-color: transparent;
+  border: 1px solid #272C35;
+  color: #FFFFFF;
+  font-weight: 400;
+  font-size: 15px;
+  padding: 0.95rem 2rem;
+  border-radius: 0px; /* Cantos 100% retos */
+  cursor: pointer;
+  transition: border-color var(--transition-fast);
+}
+
+.btn-cancel-article:hover {
+  border-color: #FFFFFF;
+}
+
+/* Mensagem de alerta de erro */
+.create-article-error-alert {
+  background-color: rgba(239, 68, 68, 0.1);
+  border: 1px solid #EF4444;
+  color: #EF4444;
+  padding: 0.85rem 1rem;
+  border-radius: 0px;
+  font-size: 14px;
+}
