@@ -85,8 +85,17 @@ export const Dashboard = () => {
         if (Array.isArray(data)) {
           const allActivitiesList: ActivityItem[] = [];
 
+          // Função auxiliar que valida se o artigo foi criado pelo usuário atualmente autenticado
+          const isMyArticle = (art: any) => {
+            if (!user) return false;
+            if (art.authorId && user.id && Number(art.authorId) === Number(user.id)) return true;
+            if (art.author?.id && user.id && Number(art.author.id) === Number(user.id)) return true;
+            if (art.author?.name && user.name && art.author.name.trim().toLowerCase() === user.name.trim().toLowerCase()) return true;
+            return false;
+          };
+
           const userArticles = data
-            .filter((art: any) => !deletedIds.includes(art.id))
+            .filter((art: any) => !deletedIds.includes(art.id) && isMyArticle(art))
             .map((art: any) => {
               // Resgata os comentários dinâmicos salvos para este artigo
               const storedComments: any[] = JSON.parse(localStorage.getItem(`@MindBlog:comments_${art.id}`) || '[]');
@@ -103,7 +112,8 @@ export const Dashboard = () => {
               });
 
               // Resgata as curtidas do próprio artigo e dos comentários
-              const articleLikes = Number(localStorage.getItem(`@MindBlog:article_likes_${art.id}`)) || art.likes || 0;
+              const likedByUsers: string[] = JSON.parse(localStorage.getItem(`@MindBlog:article_liked_by_${art.id}`) || '[]');
+              const articleLikes = (art.likes || 0) + likedByUsers.length;
               const commentLikes = storedComments.reduce((sum, c) => sum + (c.likes || 0), 0);
               const totalArticleLikes = articleLikes + commentLikes;
 
@@ -145,7 +155,7 @@ export const Dashboard = () => {
       .catch(() => {
         setMyArticles([]);
       });
-  }, []);
+  }, [user]);
 
   // Estado para controlar o modal de confirmação de exclusão do artigo
   const [articleToDelete, setArticleToDelete] = useState<number | null>(null);

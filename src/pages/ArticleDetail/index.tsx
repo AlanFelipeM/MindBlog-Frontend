@@ -12,6 +12,8 @@ interface Comment {
   date: string;
   content: string;
   likes: number;
+  baseLikes?: number;
+  likedBy?: string[];
   isLiked?: boolean;
 }
 
@@ -23,6 +25,7 @@ interface Article {
   bannerImage: string | null;
   publishedAt: string;
   author: {
+    id?: number;
     name: string;
     email: string;
     avatar?: string | null;
@@ -109,6 +112,11 @@ export const ArticleDetail = () => {
   const [isLikedArticle, setIsLikedArticle] = useState<boolean>(false);
 
   useEffect(() => {
+    // Carrega a lista de usuários que curtiram este artigo
+    const likedByUsers: string[] = JSON.parse(localStorage.getItem(`@MindBlog:article_liked_by_${id}`) || '[]');
+    const currentUserName = user?.name || '';
+    setIsLikedArticle(likedByUsers.includes(currentUserName));
+
     // Carrega comentários salvos previamente para este artigo no localStorage
     const storedCommentsStr = localStorage.getItem(`@MindBlog:comments_${id}`);
 
@@ -122,13 +130,15 @@ export const ArticleDetail = () => {
         // Mapeia os campos da API adicionando os dados necessários do Figma
         const wordCount = data.content ? data.content.split(/\s+/).length : 0;
         const readMinutes = Math.max(1, Math.ceil(wordCount / 200));
+        const baseLikes = data.likes || 0;
+        setArticleLikes(baseLikes + likedByUsers.length);
         
         const enriched: Article = {
           ...data,
           category: data.category || 'Desenvolvimento web',
           readTime: `${readMinutes}min`,
           views: data.views || (data.id * 143) % 1000,
-          likes: data.likes || (data.id * 7) % 89,
+          likes: baseLikes + likedByUsers.length,
           tags: data.tags || ['Desenvolvimento web', 'Inteligência Artificial', 'Desenvolvimento backend'],
           commentsList: []
         };
@@ -136,7 +146,15 @@ export const ArticleDetail = () => {
 
         if (storedCommentsStr) {
           try {
-            setComments(JSON.parse(storedCommentsStr));
+            const rawComments: Comment[] = JSON.parse(storedCommentsStr);
+            const processed = rawComments.map((c) => {
+              const likedBy = Array.isArray(c.likedBy) ? c.likedBy : [];
+              return {
+                ...c,
+                isLiked: likedBy.includes(currentUserName)
+              };
+            });
+            setComments(processed);
           } catch {
             setComments([]);
           }
@@ -148,9 +166,19 @@ export const ArticleDetail = () => {
         // Fallback caso a API falhe ou o ID seja 1 (ID simulado do Figma)
         if (id === '1' || !id) {
           setArticle(FIGMA_MOCK_ARTICLE);
+          setArticleLikes(FIGMA_MOCK_ARTICLE.likes + likedByUsers.length);
+
           if (storedCommentsStr) {
             try {
-              setComments(JSON.parse(storedCommentsStr));
+              const rawComments: Comment[] = JSON.parse(storedCommentsStr);
+              const processed = rawComments.map((c) => {
+                const likedBy = Array.isArray(c.likedBy) ? c.likedBy : [];
+                return {
+                  ...c,
+                  isLiked: likedBy.includes(currentUserName)
+                };
+              });
+              setComments(processed);
             } catch {
               setComments(FIGMA_MOCK_ARTICLE.commentsList);
             }
@@ -165,7 +193,7 @@ export const ArticleDetail = () => {
       .finally(() => {
         setLoading(false);
       });
-  }, [id, navigate]);
+  }, [id, navigate, user?.name]);
 
   // Função para lidar com o envio de um novo comentário
   const handleCommentSubmit = (e: React.FormEvent) => {
@@ -182,7 +210,10 @@ export const ArticleDetail = () => {
       authorAvatar,
       date: new Date().toISOString(),
       content: newCommentContent,
-      likes: 0
+      likes: 0,
+      baseLikes: 0,
+      likedBy: [],
+      isLiked: false
     };
 
     const updatedComments = [...comments, newComment];
@@ -196,16 +227,29 @@ export const ArticleDetail = () => {
     setNewCommentContent('');
   };
 
-  // Função para alternar a curtida do comentário (permite curtir/descurtir 1 vez por usuário)
+  // Função para alternar a curtida do comentário por usuário (preserva curtidas de outros usuários)
   const handleLikeComment = (commentId: number) => {
+    const currentUserName = user?.name || 'Usuário';
     setComments(prev => {
       const next = prev.map(c => {
         if (c.id === commentId) {
-          const alreadyLiked = c.isLiked || false;
+          const currentLikedBy = Array.isArray(c.likedBy) ? c.likedBy : [];
+          let updatedLikedBy: string[];
+
+          if (currentLikedBy.includes(currentUserName)) {
+            updatedLikedBy = currentLikedBy.filter(u => u !== currentUserName);
+          } else {
+            updatedLikedBy = [...currentLikedBy, currentUserName];
+          }
+
+          const baseCount = c.baseLikes !== undefined ? c.baseLikes : Math.max(0, c.likes - (c.isLiked ? 1 : 0));
+
           return {
             ...c,
-            likes: alreadyLiked ? Math.max(0, c.likes - 1) : c.likes + 1,
-            isLiked: !alreadyLiked
+            baseLikes: baseCount,
+            likedBy: updatedLikedBy,
+            likes: baseCount + updatedLikedBy.length,
+            isLiked: updatedLikedBy.includes(currentUserName)
           };
         }
         return c;
@@ -259,14 +303,29 @@ export const ArticleDetail = () => {
     });
   };
 
-  // Curte/descurte o artigo e persiste a alteração de curtidas
+  // Curte/descurte o artigo preservando curtidas dos demais usuários
   const handleLikeArticle = () => {
-    const nextLikes = isLikedArticle ? Math.max(0, articleLikes - 1) : articleLikes + 1;
-    setArticleLikes(nextLikes);
-    setIsLikedArticle(!isLikedArticle);
-    if (id) {
-      localStorage.setItem(`@MindBlog:article_likes_${id}`, String(nextLikes));
+    const currentUserName = user?.name || 'Usuário';
+    const likedByUsers: string[] = JSON.parse(localStorage.getItem(`@MindBlog:article_liked_by_${id}`) || '[]');
+
+    let updatedList: string[];
+    let nowLiked: boolean;
+
+    if (likedByUsers.includes(currentUserName)) {
+      updatedList = likedByUsers.filter(u => u !== currentUserName);
+      nowLiked = false;
+    } else {
+      updatedList = [...likedByUsers, currentUserName];
+      nowLiked = true;
     }
+
+    setIsLikedArticle(nowLiked);
+    if (id) {
+      localStorage.setItem(`@MindBlog:article_liked_by_${id}`, JSON.stringify(updatedList));
+    }
+
+    const baseLikes = article?.likes ? Math.max(0, article.likes - (isLikedArticle ? 1 : 0)) : 0;
+    setArticleLikes(baseLikes + (nowLiked ? 1 : 0));
   };
 
   // Função auxiliar para formatação de data no padrão DD/MM/YYYY
