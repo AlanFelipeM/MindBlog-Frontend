@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Linkedin, Github, Twitter } from 'lucide-react';
+import { FaLinkedin, FaGithub, FaTwitter } from 'react-icons/fa';
 import './styles.css';
 
 export const Footer = () => {
@@ -28,9 +28,9 @@ export const Footer = () => {
         <div className="footer-social">
           <h4 className="footer-title">Redes Sociais</h4>
           <div className="social-icons">
-            <a href="#" aria-label="LinkedIn"><Linkedin size={20} /></a>
-            <a href="#" aria-label="GitHub"><Github size={20} /></a>
-            <a href="#" aria-label="Twitter"><Twitter size={20} /></a>
+            <a href="#" aria-label="LinkedIn"><FaLinkedin size={20} /></a>
+            <a href="#" aria-label="GitHub"><FaGithub size={20} /></a>
+            <a href="#" aria-label="Twitter"><FaTwitter size={20} /></a>
           </div>
         </div>
 
