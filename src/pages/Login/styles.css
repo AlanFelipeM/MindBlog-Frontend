@@ -77,6 +77,12 @@
   width: 100%;
 }
 
+.auth-btn-icon {
+  width: 18px;
+  height: 18px;
+  object-fit: contain;
+}
+
 .auth-footer {
   margin-top: 2rem;
   text-align: center;

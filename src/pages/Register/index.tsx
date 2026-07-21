@@ -1,8 +1,8 @@
 import { FormEvent } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { UserPlus } from 'lucide-react';
 import { Input } from '../../components/Input';
 import { Button } from '../../components/Button';
+import usersIcon from '../../assets/icones/users.png';
 import '../Login/styles.css'; // Reusing auth styles
 
 export const Register = () => {
@@ -58,7 +58,7 @@ export const Register = () => {
           />
 
           <Button type="submit" className="auth-submit-btn">
-            <UserPlus size={18} />
+            <img src={usersIcon} alt="" className="auth-btn-icon" />
             Criar conta
           </Button>
         </form>
