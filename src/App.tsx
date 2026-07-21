@@ -3,6 +3,7 @@ import { Header } from './components/Header';
 import { Footer } from './components/Footer';
 import { Login } from './pages/Login';
 import { Register } from './pages/Register';
+import { Home } from './pages/Home';
 
 // Layout component to wrap pages with Header and Footer
 function BaseLayout() {
@@ -13,15 +14,6 @@ function BaseLayout() {
         <Outlet />
       </main>
       <Footer />
-    </div>
-  );
-}
-
-// Temporary Home placeholder
-function Home() {
-  return (
-    <div style={{ padding: '4rem 2rem', textAlign: 'center' }}>
-      <h1>Página Inicial em construção</h1>
     </div>
   );
 }
