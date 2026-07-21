@@ -111,6 +111,63 @@ export const ArticleDetail = () => {
   const [articleLikes, setArticleLikes] = useState<number>(0);
   const [isLikedArticle, setIsLikedArticle] = useState<boolean>(false);
 
+  // Estado para verificar se o artigo está salvo/favoritado
+  const [isBookmarked, setIsBookmarked] = useState<boolean>(false);
+
+  // Estado para percentual de rolagem da barra de progresso no topo
+  const [scrollProgress, setScrollProgress] = useState(0);
+
+  // Estado para toast de mensagem rápida (ex: link copiado)
+  const [toastMessage, setToastMessage] = useState<string | null>(null);
+
+  // Monitora o scroll da página para atualizar a barra de progresso de leitura no topo
+  useEffect(() => {
+    const handleScroll = () => {
+      const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
+      if (totalHeight > 0) {
+        const currentScroll = window.scrollY;
+        setScrollProgress((currentScroll / totalHeight) * 100);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // Verifica se o artigo atual está na lista de salvos no localStorage
+  useEffect(() => {
+    if (id) {
+      const bookmarkedIds: number[] = JSON.parse(localStorage.getItem('@MindBlog:bookmarked_articles') || '[]');
+      setIsBookmarked(bookmarkedIds.includes(Number(id)));
+    }
+  }, [id]);
+
+  // Alterna o salvamento do artigo nos favoritos
+  const handleToggleBookmark = () => {
+    if (!id) return;
+    const artId = Number(id);
+    const bookmarkedIds: number[] = JSON.parse(localStorage.getItem('@MindBlog:bookmarked_articles') || '[]');
+    let updated: number[];
+    if (bookmarkedIds.includes(artId)) {
+      updated = bookmarkedIds.filter((bId) => bId !== artId);
+      setIsBookmarked(false);
+      setToastMessage('Artigo removido dos salvos.');
+    } else {
+      updated = [...bookmarkedIds, artId];
+      setIsBookmarked(true);
+      setToastMessage('Artigo salvo nos favoritos!');
+    }
+    localStorage.setItem('@MindBlog:bookmarked_articles', JSON.stringify(updated));
+    setTimeout(() => setToastMessage(null), 3000);
+  };
+
+  // Copia o link do artigo para a área de transferência
+  const handleShareArticle = () => {
+    navigator.clipboard.writeText(window.location.href);
+    setToastMessage('Link do artigo copiado para a área de transferência!');
+    setTimeout(() => setToastMessage(null), 3500);
+  };
+
   useEffect(() => {
     // Carrega a lista de usuários que curtiram este artigo
     const likedByUsers: string[] = JSON.parse(localStorage.getItem(`@MindBlog:article_liked_by_${id}`) || '[]');
@@ -351,6 +408,19 @@ export const ArticleDetail = () => {
 
   return (
     <div className="article-detail-page">
+      {/* Barra de Progresso de Leitura no topo fixo da tela */}
+      <div 
+        className="reading-scroll-bar" 
+        style={{ width: `${scrollProgress}%` }} 
+      />
+
+      {/* Alerta Toast de confirmação (ex: link copiado ou salvo) */}
+      {toastMessage && (
+        <div className="article-toast-banner">
+          <span>{toastMessage}</span>
+        </div>
+      )}
+
       {/* Botão de navegação para retornar ao feed principal de artigos */}
       <div className="article-back-nav">
         <button onClick={() => navigate('/')} className="back-btn">
@@ -401,10 +471,20 @@ export const ArticleDetail = () => {
             >
               <Heart size={18} fill={isLikedArticle ? '#EF4444' : 'none'} color={isLikedArticle ? '#EF4444' : 'currentColor'} />
             </button>
-            <button className="action-btn" aria-label="Salvar artigo">
-              <Bookmark size={18} />
+            <button 
+              onClick={handleToggleBookmark}
+              className={`action-btn ${isBookmarked ? 'bookmarked' : ''}`} 
+              aria-label="Salvar artigo"
+              title={isBookmarked ? "Remover dos salvos" : "Salvar artigo"}
+            >
+              <Bookmark size={18} fill={isBookmarked ? '#00D8FF' : 'none'} color={isBookmarked ? '#00D8FF' : 'currentColor'} />
             </button>
-            <button className="action-btn" aria-label="Compartilhar artigo">
+            <button 
+              onClick={handleShareArticle}
+              className="action-btn" 
+              aria-label="Compartilhar artigo"
+              title="Copiar link do artigo"
+            >
               <Share2 size={18} />
             </button>
           </div>

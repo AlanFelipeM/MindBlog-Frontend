@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Search, Filter, LayoutGrid, List, Clock, Heart, Eye } from 'lucide-react';
+import { Search, Filter, LayoutGrid, List, Clock, Heart, Eye, Bookmark } from 'lucide-react';
 import './styles.css';
 
 // Interface que descreve a estrutura de cada artigo na listagem
@@ -129,6 +129,24 @@ export const Articles = () => {
   // Estado que armazena a lista de artigos a ser exibida na tela
   const [articles, setArticles] = useState<ArticleItem[]>(MOCK_ARTICLES);
 
+  // Lista de IDs dos artigos salvos/favoritados pelo usuário
+  const [bookmarkedIds, setBookmarkedIds] = useState<number[]>(() => {
+    return JSON.parse(localStorage.getItem('@MindBlog:bookmarked_articles') || '[]');
+  });
+
+  // Alterna salvar/remover artigo dos favoritos
+  const handleToggleBookmark = (e: React.MouseEvent, articleId: number) => {
+    e.stopPropagation();
+    let updated: number[];
+    if (bookmarkedIds.includes(articleId)) {
+      updated = bookmarkedIds.filter((id) => id !== articleId);
+    } else {
+      updated = [...bookmarkedIds, articleId];
+    }
+    setBookmarkedIds(updated);
+    localStorage.setItem('@MindBlog:bookmarked_articles', JSON.stringify(updated));
+  };
+
   // Busca os artigos da API backend e utiliza os dados simulados caso o servidor não responda
   useEffect(() => {
     fetch('http://localhost:3333/api/articles')
@@ -151,21 +169,25 @@ export const Articles = () => {
         }
       })
       .catch(() => {
-        // Em caso de falha na requisição, mantemos os artigos simulados
         setArticles(MOCK_ARTICLES);
       });
   }, []);
 
-  // Filtra os artigos dinamicamente de acordo com a pesquisa por texto e a categoria escolhida
+  // Filtra os artigos dinamicamente de acordo com a pesquisa por texto, categoria ou salvos
   const filteredArticles = articles.filter((article) => {
     const title = (article.title || '').toLowerCase();
     const excerpt = (article.excerpt || '').toLowerCase();
     const category = (article.category || '').toLowerCase();
     const query = searchQuery.toLowerCase();
 
-    const matchesSearch = title.includes(query) || excerpt.includes(query);
-    const matchesCategory =
-      selectedCategory === 'all' || category === selectedCategory.toLowerCase();
+    const matchesSearch = title.includes(query) || excerpt.includes(query) || category.includes(query);
+    
+    let matchesCategory = true;
+    if (selectedCategory === 'saved') {
+      matchesCategory = bookmarkedIds.includes(article.id);
+    } else if (selectedCategory !== 'all') {
+      matchesCategory = category === selectedCategory.toLowerCase();
+    }
 
     return matchesSearch && matchesCategory;
   });
@@ -215,6 +237,7 @@ export const Articles = () => {
               onChange={(e) => setSelectedCategory(e.target.value)}
             >
               <option value="all">Todas as categorias</option>
+              <option value="saved">Meus Salvos 🔖</option>
               <option value="Desenvolvimento web">Desenvolvimento web</option>
               <option value="UX/UI Design">UX/UI Design</option>
               <option value="Inteligência Artificial">Inteligência Artificial</option>
@@ -251,58 +274,68 @@ export const Articles = () => {
       ) : (
         /* Container de exibição dos artigos (alterna dinamicamente a classe entre grid e list) */
         <div className={`articles-list-container ${viewMode}-mode`}>
-          {filteredArticles.map((article) => (
-            <article
-              key={article.id}
-              className="article-card-item"
-              onClick={() => navigate(`/artigos/${article.id}`)}
-            >
-              {/* Imagem de capa do artigo */}
-              <div className="article-card-image-box">
-                <img
-                  src={article.bannerImage}
-                  alt={article.title}
-                  className="article-card-img"
-                />
-              </div>
-
-              {/* Conteúdo textual e métricas do artigo */}
-              <div className="article-card-content">
-                {/* Meta-informações superiores: categoria e data */}
-                <div className="card-top-meta">
-                  <span className="card-category-tag">{article.category}</span>
-                  <span className="card-publish-date">
-                    <Clock size={12} /> {formatDate(article.publishedAt)}
-                  </span>
+          {filteredArticles.map((article) => {
+            const isBookmarked = bookmarkedIds.includes(article.id);
+            return (
+              <article
+                key={article.id}
+                className="article-card-item"
+                onClick={() => navigate(`/artigos/${article.id}`)}
+              >
+                {/* Imagem de capa do artigo */}
+                <div className="article-card-image-box">
+                  <img
+                    src={article.bannerImage}
+                    alt={article.title}
+                    className="article-card-img"
+                  />
+                  <button
+                    className={`card-bookmark-btn ${isBookmarked ? 'bookmarked' : ''}`}
+                    onClick={(e) => handleToggleBookmark(e, article.id)}
+                    title={isBookmarked ? "Remover dos salvos" : "Salvar artigo"}
+                  >
+                    <Bookmark size={15} fill={isBookmarked ? '#00D8FF' : 'none'} color={isBookmarked ? '#00D8FF' : '#FFFFFF'} />
+                  </button>
                 </div>
 
-                {/* Título do artigo */}
-                <h3 className="card-article-title">{article.title}</h3>
-
-                {/* Resumo do conteúdo do artigo */}
-                <p className="card-article-excerpt">{article.excerpt}</p>
-
-                {/* Rodapé do card: dados do autor e estatísticas de engajamento */}
-                <div className="card-footer-meta">
-                  <div className="card-author-info">
-                    <span className="card-author-name">{article.author.name}</span>
+                {/* Conteúdo textual e métricas do artigo */}
+                <div className="article-card-content">
+                  {/* Meta-informações superiores: categoria e data */}
+                  <div className="card-top-meta">
+                    <span className="card-category-tag">{article.category}</span>
+                    <span className="card-publish-date">
+                      <Clock size={12} /> {formatDate(article.publishedAt)}
+                    </span>
                   </div>
 
-                  <div className="card-stats-info">
-                    <span className="stat-badge">
-                      <Clock size={12} /> {article.readTime}
-                    </span>
-                    <span className="stat-badge">
-                      <Eye size={12} /> {article.views}
-                    </span>
-                    <span className="stat-badge">
-                      <Heart size={12} /> {article.likes}
-                    </span>
+                  {/* Título do artigo */}
+                  <h3 className="card-article-title">{article.title}</h3>
+
+                  {/* Resumo do conteúdo do artigo */}
+                  <p className="card-article-excerpt">{article.excerpt}</p>
+
+                  {/* Rodapé do card: dados do autor e estatísticas de engajamento */}
+                  <div className="card-footer-meta">
+                    <div className="card-author-info">
+                      <span className="card-author-name">{article.author.name}</span>
+                    </div>
+
+                    <div className="card-stats-info">
+                      <span className="stat-badge">
+                        <Clock size={12} /> {article.readTime}
+                      </span>
+                      <span className="stat-badge">
+                        <Eye size={12} /> {article.views}
+                      </span>
+                      <span className="stat-badge">
+                        <Heart size={12} /> {article.likes}
+                      </span>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </article>
-          ))}
+              </article>
+            );
+          })}
         </div>
       )}
     </div>
