@@ -217,17 +217,23 @@ export const ArticleDetail = () => {
     });
   };
 
-  // Iniciar modo de edição de um comentário
+  // Iniciar modo de edição de um comentário (apenas se for o autor do comentário)
   const handleStartEditComment = (comment: Comment) => {
+    if (user && comment.authorName !== user.name) return;
     setEditingCommentId(comment.id);
     setEditingContent(comment.content);
   };
 
-  // Salvar a alteração do comentário editado
+  // Salvar a alteração do comentário editado (apenas se for o autor)
   const handleSaveEditComment = (commentId: number) => {
     if (!editingContent.trim()) return;
     setComments((prev) => {
-      const updated = prev.map((c) => (c.id === commentId ? { ...c, content: editingContent } : c));
+      const updated = prev.map((c) => {
+        if (c.id === commentId && (!user || c.authorName === user.name)) {
+          return { ...c, content: editingContent };
+        }
+        return c;
+      });
       if (id) {
         localStorage.setItem(`@MindBlog:comments_${id}`, JSON.stringify(updated));
       }
@@ -237,10 +243,15 @@ export const ArticleDetail = () => {
     setEditingContent('');
   };
 
-  // Excluir um comentário
+  // Excluir um comentário (apenas se for o autor)
   const handleDeleteComment = (commentId: number) => {
     setComments((prev) => {
-      const updated = prev.filter((c) => c.id !== commentId);
+      const updated = prev.filter((c) => {
+        if (c.id === commentId) {
+          return user ? c.authorName !== user.name : false;
+        }
+        return true;
+      });
       if (id) {
         localStorage.setItem(`@MindBlog:comments_${id}`, JSON.stringify(updated));
       }
@@ -438,7 +449,7 @@ export const ArticleDetail = () => {
                       <Heart size={14} fill={comment.isLiked ? '#EF4444' : 'none'} color={comment.isLiked ? '#EF4444' : 'currentColor'} /> {comment.likes}
                     </button>
 
-                    {isAuthenticated && (
+                    {isAuthenticated && user && comment.authorName === user.name && (
                       <>
                         <button
                           onClick={() => handleStartEditComment(comment)}
