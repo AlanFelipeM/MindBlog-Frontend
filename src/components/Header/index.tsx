@@ -20,8 +20,10 @@ export const Header = () => {
         </Link>
 
         <nav className="header-nav">
-          <Link to="/" className="nav-link">Home</Link>
-          <Link to="/artigos" className="nav-link">Artigos</Link>
+          <div className="nav-links">
+            <Link to="/" className="nav-link">Home</Link>
+            <Link to="/artigos" className="nav-link">Artigos</Link>
+          </div>
           
           <div className="header-divider" />
 
