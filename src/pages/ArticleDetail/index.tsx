@@ -205,9 +205,6 @@ export const ArticleDetail = () => {
           Explorando as tendências e inovações que moldarão o futuro da IA nos próximos anos.
         </p>
 
-        {/* Linha horizontal divisória conforme imagem do Figma */}
-        <hr className="article-divider" />
-
         {/* Seção com dados do Autor e Ações Rápidas (Curtir, Salvar, Compartilhar) */}
         <div className="article-author-section">
           <div className="author-info-box">
@@ -240,9 +237,6 @@ export const ArticleDetail = () => {
             </button>
           </div>
         </div>
-
-        {/* Linha horizontal divisória abaixo do perfil do autor */}
-        <hr className="article-divider" />
 
         {/* Métricas secundárias abaixo da caixa do autor */}
         <div className="article-stats-row">

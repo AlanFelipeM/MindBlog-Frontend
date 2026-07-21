@@ -62,9 +62,10 @@
   font-family: var(--font-sans);
   font-size: 48px;
   font-weight: 500;
-  line-height: 1.2;
+  line-height: 1.1;
   color: #FFFFFF;
   margin-bottom: 1rem;
+  margin-top: 1.5rem;
 }
 
 @media (max-width: 768px) {
@@ -75,18 +76,16 @@
 
 .article-main-subtitle {
   font-family: var(--font-sans);
-  font-size: 24px;
+  font-size: 20px;
   font-weight: 300;
   color: var(--text-secondary);
   line-height: 1.5;
+  margin-top: 0;
   margin-bottom: 2.5rem;
 }
 
 .article-divider {
-  border: 0;
-  height: 1px;
-  background-color: #272C35;
-  margin: 2rem 0;
+  display: none; /* Não utilizado, usando bordas na seção do autor */
 }
 
 /* Seção de Autor e Curtidas */
@@ -95,6 +94,9 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 1.5rem;
+  padding: 1.5rem 0;
+  border-top: 1px solid #272C35;
+  border-bottom: 1px solid #272C35;
 }
 
 .author-info-box {
@@ -129,7 +131,7 @@
   font-size: 16px;
   font-weight: 500;
   color: #FFFFFF;
-  margin-bottom: 0.25rem;
+  margin-bottom: 0px;
 }
 
 .author-sub-meta {
