@@ -237,7 +237,7 @@ export const Articles = () => {
               onChange={(e) => setSelectedCategory(e.target.value)}
             >
               <option value="all">Todas as categorias</option>
-              <option value="saved">Meus Salvos 🔖</option>
+              <option value="saved">Meus Salvos</option>
               <option value="Desenvolvimento web">Desenvolvimento web</option>
               <option value="UX/UI Design">UX/UI Design</option>
               <option value="Inteligência Artificial">Inteligência Artificial</option>
