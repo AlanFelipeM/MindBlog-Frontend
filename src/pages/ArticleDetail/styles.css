@@ -51,9 +51,9 @@
 
 .article-category-tag {
   background-color: #D97706; /* Cor laranja escura idêntica ao Figma */
-  color: #FFFFFF;
+  color: #000000;
   font-size: 14px;
-  font-weight: 500;
+  font-weight: 600;
   padding: 0.35rem 0.75rem;
   border-radius: 0px; /* Borda 100% reta */
 }

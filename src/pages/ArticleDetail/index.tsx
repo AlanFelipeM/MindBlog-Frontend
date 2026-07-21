@@ -241,6 +241,9 @@ export const ArticleDetail = () => {
           </div>
         </div>
 
+        {/* Linha horizontal divisória abaixo do perfil do autor */}
+        <hr className="article-divider" />
+
         {/* Métricas secundárias abaixo da caixa do autor */}
         <div className="article-stats-row">
           <span className="stat-item"><Heart size={14} /> {article.likes} curtidas</span>
