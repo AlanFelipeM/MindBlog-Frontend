@@ -8,10 +8,11 @@
 }
 
 .auth-logo {
-  font-size: 2.5rem;
-  font-weight: 700;
+  font-family: var(--font-logo);
+  font-size: 48px;
+  font-weight: 400;
   color: var(--text-primary);
-  letter-spacing: -2px;
+  line-height: 1.2;
   margin-bottom: 2rem;
 }
 
@@ -21,14 +22,18 @@
 }
 
 .auth-header h1 {
-  font-size: 1.75rem;
-  color: var(--text-primary);
+  font-family: var(--font-sans);
+  font-size: 32px;
+  font-weight: 700;
+  color: #FFFFFF;
   margin-bottom: 0.5rem;
 }
 
 .auth-header p {
+  font-family: var(--font-sans);
+  font-size: 18px;
+  font-weight: 300;
   color: var(--text-secondary);
-  font-size: 0.875rem;
 }
 
 .auth-card {

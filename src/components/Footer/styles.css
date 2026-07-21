@@ -16,12 +16,13 @@
 }
 
 .footer-logo {
-  font-size: 1.5rem;
-  font-weight: 700;
+  font-family: var(--font-logo);
+  font-size: 32px;
+  font-weight: 400;
   color: var(--text-primary);
-  letter-spacing: -1px;
   display: inline-block;
   margin-bottom: 1rem;
+  text-decoration: none;
 }
 
 .footer-description {
