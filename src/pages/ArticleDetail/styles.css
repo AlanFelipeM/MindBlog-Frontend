@@ -23,14 +23,14 @@
   position: fixed;
   bottom: 24px;
   right: 24px;
-  background-color: #0F141C;
+  background-color: var(--bg-secondary);
   border: 1px solid var(--brand-primary);
   color: var(--brand-primary);
   padding: 0.75rem 1.25rem;
   border-radius: 4px;
   font-size: 13px;
   font-weight: 500;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
   z-index: 9999;
   animation: articleToastSlideIn 0.3s ease-out;
 }
@@ -59,7 +59,7 @@
 /* Botão de Voltar */
 .article-back-nav {
   margin-bottom: 2.5rem;
-  border-bottom: 1px solid #14181F;
+  border-bottom: 1px solid var(--border-color);
   padding-bottom: 1.5rem;
 }
 
@@ -91,8 +91,8 @@
 }
 
 .article-category-tag {
-  background-color: #D97706; /* Cor laranja escura idêntica ao Figma */
-  color: #000000;
+  background-color: var(--brand-primary);
+  color: #FFFFFF;
   font-size: 14px;
   font-weight: 600;
   padding: 0.35rem 0.75rem;
@@ -104,7 +104,7 @@
   font-size: 48px;
   font-weight: 500;
   line-height: 1.1;
-  color: #FFFFFF;
+  color: var(--text-primary);
   margin-bottom: 1rem;
   margin-top: 1.5rem;
 }
@@ -126,7 +126,7 @@
 }
 
 .article-divider {
-  display: none; /* Não utilizado, usando bordas na seção do autor */
+  display: none;
 }
 
 /* Seção de Autor e Curtidas */
@@ -136,8 +136,8 @@
   align-items: center;
   margin-bottom: 1.5rem;
   padding: 1.5rem 0;
-  border-top: 1px solid #272C35;
-  border-bottom: 1px solid #272C35;
+  border-top: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--border-color);
 }
 
 .author-info-box {
@@ -150,13 +150,13 @@
   width: 56px;
   height: 56px;
   object-fit: cover;
-  border-radius: 0px; /* Sem arredondar */
+  border-radius: 0px;
 }
 
 .author-avatar-placeholder {
   width: 56px;
   height: 56px;
-  background-color: #14181F;
+  background-color: var(--bg-tertiary);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -171,7 +171,7 @@
 .author-name-text {
   font-size: 16px;
   font-weight: 500;
-  color: #FFFFFF;
+  color: var(--text-primary);
   margin-bottom: 0px;
 }
 
@@ -184,7 +184,7 @@
 }
 
 .dot-divider {
-  color: var(--text-muted);
+  color: var(--text-secondary);
 }
 
 .read-time-box {
@@ -239,8 +239,8 @@
   width: 100%;
   max-height: 480px;
   object-fit: cover;
-  border-radius: 0px; /* Banner reto */
-  border: 1px solid #272C35;
+  border-radius: 0px;
+  border: 1px solid var(--border-color);
 }
 
 .article-banner-placeholder {
@@ -250,14 +250,14 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid #272C35;
+  border: 1px solid var(--border-color);
 }
 
 .article-banner-placeholder span {
   font-family: var(--font-sans);
   font-weight: 700;
   font-size: 48px;
-  color: #0B0E13;
+  color: var(--bg-primary);
   letter-spacing: -1px;
 }
 
@@ -270,7 +270,7 @@
   font-family: var(--font-sans);
   font-size: 22px;
   font-weight: 700;
-  color: #FFFFFF;
+  color: var(--text-primary);
   line-height: 1.4;
   margin-bottom: 1.25rem;
 }
@@ -279,7 +279,7 @@
   font-family: var(--font-sans);
   font-size: 20px;
   font-weight: 600;
-  color: #FFFFFF;
+  color: var(--text-primary);
   margin-top: 2rem;
   margin-bottom: 0.75rem;
 }
@@ -302,8 +302,8 @@
 }
 
 .article-tag-item {
-  background-color: #14181F;
-  border: 1px solid #272C35;
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
   color: var(--text-secondary);
   font-size: 13px;
   padding: 0.4rem 0.85rem;
@@ -319,21 +319,21 @@
   font-family: var(--font-sans);
   font-size: 22px;
   font-weight: 600;
-  color: #FFFFFF;
+  color: var(--text-primary);
   margin-bottom: 2rem;
 }
 
 /* Card Prompt de Login */
 .login-prompt-card {
-  background-color: #14181F;
-  border: 1px solid #272C35;
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
   padding: 2.5rem;
   text-align: center;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 1.25rem;
-  border-radius: 0px; /* Sem arredondar */
+  border-radius: 0px;
   margin-bottom: 3rem;
 }
 
@@ -345,7 +345,7 @@
 
 .prompt-login-btn {
   background-color: var(--brand-primary);
-  color: #000000;
+  color: #FFFFFF;
   font-weight: 600;
   font-size: 14px;
   padding: 0.75rem 2rem;
@@ -370,13 +370,13 @@
 .comment-textarea {
   width: 100%;
   min-height: 120px;
-  background-color: #14181F;
-  border: 1px solid #272C35;
-  color: #FFFFFF;
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
   padding: 1rem;
   font-family: var(--font-sans);
   font-size: 15px;
-  border-radius: 0px; /* Textarea reto */
+  border-radius: 0px;
   resize: vertical;
 }
 
@@ -387,11 +387,11 @@
 
 .comment-publish-btn {
   background-color: var(--brand-primary);
-  color: #000000;
+  color: #FFFFFF;
   font-weight: 600;
   font-size: 14px;
   padding: 0.75rem 2rem;
-  border-radius: 0px; /* Botão reto */
+  border-radius: 0px;
   border: none;
   cursor: pointer;
   transition: background-color var(--transition-fast);
@@ -409,10 +409,10 @@
 }
 
 .comment-card-wrapper {
-  background-color: #14181F;
-  border: 1px solid #272C35;
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
   padding: 1.5rem;
-  border-radius: 0px; /* Card reto */
+  border-radius: 0px;
 }
 
 .comment-header-row {
@@ -432,15 +432,15 @@
   width: 36px;
   height: 36px;
   object-fit: cover;
-  border-radius: 0px; /* Avatar do comentário reto */
-  border: 1px solid #272C35;
+  border-radius: 0px;
+  border: 1px solid var(--border-color);
 }
 
 .commenter-avatar-placeholder {
   width: 36px;
   height: 36px;
-  background-color: #0B0E13;
-  border: 1px solid #272C35;
+  background-color: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -455,7 +455,7 @@
 .commenter-name {
   font-size: 14px;
   font-weight: 600;
-  color: #FFFFFF;
+  color: var(--text-primary);
 }
 
 .comment-date-text {
@@ -488,7 +488,7 @@
 .comment-action-btn {
   background: transparent;
   border: none;
-  color: var(--text-muted);
+  color: var(--text-secondary);
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -527,7 +527,7 @@
 .btn-save-comment-edit {
   background-color: var(--brand-primary);
   border: none;
-  color: #000000;
+  color: #FFFFFF;
   font-size: 12px;
   font-weight: 500;
   padding: 0.4rem 0.85rem;
@@ -540,10 +540,8 @@
 
 .btn-cancel-comment-edit {
   background-color: transparent;
-  border: 1px solid #272C35;
-  color: #FFFFFF;
-  font-size: 12px;
-  font-weight: 400;
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
   padding: 0.4rem 0.85rem;
   border-radius: 0px;
   cursor: pointer;

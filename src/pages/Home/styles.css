@@ -24,7 +24,7 @@
   font-family: var(--font-sans);
   font-size: 54px;
   font-weight: 700;
-  color: #FFFFFF;
+  color: var(--text-primary);
   line-height: 1.15;
   margin-bottom: 1.5rem;
 }
@@ -71,7 +71,7 @@
 }
 
 .btn-hero-outline {
-  border: 1px solid #272C35;
+  border: 1px solid var(--border-color);
   color: var(--text-primary);
   background-color: transparent;
   font-weight: 600;
@@ -86,16 +86,16 @@
 }
 
 .btn-hero-outline:hover {
-  background-color: rgba(255, 255, 255, 0.05);
+  background-color: var(--bg-tertiary);
   transform: translateY(-2px);
 }
 
 /* Barra de Filtro por Categoria */
 .category-filter-container {
   width: 100%;
-  border-top: 1px solid #14181F;
-  border-bottom: none; /* Removida a linha inferior de seguida conforme pedido */
-  background-color: #0B0E13;
+  border-top: 1px solid var(--border-color);
+  border-bottom: none;
+  background-color: var(--bg-primary);
   padding: 1.25rem 2.5rem;
 }
 
@@ -108,7 +108,7 @@
 
 .category-btn {
   background-color: transparent;
-  border: 1px solid #272C35;
+  border: 1px solid var(--border-color);
   color: var(--text-secondary);
   padding: 0.5rem 1.25rem;
   border-radius: 0px;
@@ -119,7 +119,7 @@
 
 .category-btn:hover {
   color: var(--text-primary);
-  border-color: var(--text-secondary);
+  border-color: var(--brand-primary);
 }
 
 .category-btn.active {
@@ -132,7 +132,7 @@
 /* Articles Section */
 .articles-section {
   padding: 5rem 2.5rem;
-  background-color: #0B0E13;
+  background-color: var(--bg-primary);
 }
 
 .section-container {
@@ -153,7 +153,7 @@
   font-size: 36px;
   font-weight: 500;
   line-height: 40px;
-  color: #FFFFFF;
+  color: var(--text-primary);
   margin-bottom: 0.5rem;
 }
 
@@ -203,8 +203,8 @@
 
 /* Article Card */
 .article-card {
-  background-color: #14181F;
-  border: 1px solid #272C35;
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
   border-radius: 0px;
   overflow: hidden;
   display: flex;
@@ -217,14 +217,14 @@
 .article-card:hover {
   transform: translateY(-6px);
   border-color: var(--brand-primary);
-  box-shadow: none !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08) !important;
 }
 
 .card-image {
   width: 100%;
   height: 220px;
   object-fit: cover;
-  border-bottom: 1px solid #272C35;
+  border-bottom: 1px solid var(--border-color);
 }
 
 .card-image-placeholder {
@@ -234,14 +234,14 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  border-bottom: 1px solid #272C35;
+  border-bottom: 1px solid var(--border-color);
 }
 
 .card-image-placeholder span {
   font-family: var(--font-sans);
   font-weight: 700;
   font-size: 36px;
-  color: #0B0E13;
+  color: var(--bg-primary);
   letter-spacing: -1px;
 }
 
@@ -264,7 +264,7 @@
   font-weight: 600;
   text-transform: uppercase;
   color: var(--brand-primary);
-  background-color: rgba(0, 216, 255, 0.08);
+  background-color: rgba(2, 132, 199, 0.1);
   padding: 0.25rem 0.6rem;
   border-radius: 0px;
   letter-spacing: 0.5px;
@@ -284,7 +284,7 @@
 }
 
 .card-title a {
-  color: #FFFFFF;
+  color: var(--text-primary);
   transition: color var(--transition-fast);
 }
 
@@ -307,7 +307,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-top: 1px solid #272C35;
+  border-top: 1px solid var(--border-color);
   padding-top: 1.25rem;
   margin-top: auto;
 }
@@ -334,7 +334,7 @@
 
 /* Recent Section adjustments (no image) */
 .recent-section {
-  border-top: 1px solid #14181F;
+  border-top: 1px solid var(--border-color);
 }
 
 .recent-card .card-content {
@@ -348,9 +348,9 @@
 
 /* Newsletter Section */
 .newsletter-section {
-  background-color: #14181F;
-  border-top: 1px solid #272C35;
-  border-bottom: 1px solid #272C35;
+  background-color: var(--bg-secondary);
+  border-top: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--border-color);
   padding: 6rem 2.5rem;
   display: flex;
   justify-content: center;
@@ -369,7 +369,7 @@
   height: 56px;
   border-radius: 0px;
   background-color: transparent;
-  border: 1px solid #272C35;
+  border: 1px solid var(--border-color);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -381,7 +381,7 @@
   font-family: var(--font-sans);
   font-size: 32px;
   font-weight: 700;
-  color: #FFFFFF;
+  color: var(--text-primary);
   margin-bottom: 0.75rem;
 }
 
@@ -403,12 +403,12 @@
 
 .newsletter-input {
   flex: 1;
-  background-color: #0B0E13;
-  border: 1px solid #272C35;
+  background-color: var(--bg-primary);
+  border: 1px solid var(--border-color);
   border-right: none;
   border-radius: 0px;
   padding: 0.85rem 1.25rem;
-  color: #FFFFFF;
+  color: var(--text-primary);
   font-size: 14px;
 }
 
@@ -446,7 +446,7 @@
 /* Call to Action Section */
 .cta-section {
   padding: 7rem 2.5rem;
-  background-color: #0B0E13;
+  background-color: var(--bg-primary);
   text-align: center;
 }
 
@@ -462,7 +462,7 @@
   font-family: var(--font-sans);
   font-size: 36px;
   font-weight: 700;
-  color: #FFFFFF;
+  color: var(--text-primary);
   margin-bottom: 0.75rem;
 }
 

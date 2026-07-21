@@ -25,7 +25,7 @@
 }
 
 .settings-back-btn:hover {
-  color: #FFFFFF;
+  color: var(--text-primary);
 }
 
 /* Seção de cabeçalho da página */
@@ -37,7 +37,7 @@
   font-family: var(--font-sans);
   font-size: 36px;
   font-weight: 500;
-  color: #FFFFFF;
+  color: var(--text-primary);
   margin-bottom: 0.5rem;
   line-height: 1.2;
 }
@@ -50,8 +50,8 @@
 
 /* Card/Container retangular do formulário */
 .settings-form-card {
-  background-color: #14181F;
-  border: 1px solid #272C35;
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
   border-radius: 0px; /* Cantos 100% retos */
   padding: 2.5rem;
 }
@@ -95,8 +95,8 @@
 .avatar-preview-box {
   width: 120px;
   height: 120px;
-  background-color: #1E242D;
-  border: 1px solid #272C35;
+  background-color: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
   border-radius: 0px; /* Cantos 100% retos */
   overflow: hidden;
   display: flex;
@@ -127,8 +127,8 @@
 }
 
 .file-upload-btn {
-  background-color: #1E242D;
-  border: 1px solid #272C35;
+  background-color: var(--bg-primary);
+  border: 1px solid var(--border-color);
   color: var(--text-secondary);
   font-size: 13px;
   padding: 0.5rem 1rem;
@@ -141,7 +141,7 @@
 
 .file-upload-btn:hover {
   border-color: var(--brand-primary);
-  color: #FFFFFF;
+  color: var(--text-primary);
 }
 
 .hidden-file-input {
@@ -162,7 +162,7 @@
 .form-label {
   font-size: 14px;
   font-weight: 500;
-  color: #FFFFFF;
+  color: var(--text-primary);
 }
 
 .form-label.label-with-icon {
@@ -177,9 +177,9 @@
 
 .form-input {
   width: 100%;
-  background-color: #1E242D;
-  border: 1px solid #272C35;
-  color: #FFFFFF;
+  background-color: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
   padding: 0.85rem 1rem;
   font-size: 14px;
   border-radius: 0px; /* Cantos 100% retos */
@@ -222,9 +222,9 @@
 /* Textarea para a biografia */
 .form-textarea {
   width: 100%;
-  background-color: #1E242D;
-  border: 1px solid #272C35;
-  color: #FFFFFF;
+  background-color: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
   padding: 0.85rem 1rem;
   font-size: 14px;
   border-radius: 0px; /* Cantos 100% retos */
@@ -254,7 +254,7 @@
 .settings-divider {
   border: 0;
   height: 1px;
-  background-color: #272C35;
+  background-color: var(--border-color);
   margin: 0.5rem 0;
 }
 
@@ -268,7 +268,7 @@
 .account-info-title {
   font-size: 16px;
   font-weight: 500;
-  color: #FFFFFF;
+  color: var(--text-primary);
 }
 
 .account-info-grid {
@@ -297,13 +297,13 @@
 .info-item-value {
   font-size: 15px;
   font-weight: 400;
-  color: #FFFFFF;
+  color: var(--text-primary);
 }
 
 /* Botão principal de Salvar Alterações */
 .btn-save-settings {
   width: 100%;
-  background-color: var(--brand-primary); /* Cor ciano #00D8FF */
+  background-color: var(--brand-primary);
   color: #000000;
   font-weight: 600;
   font-size: 15px;

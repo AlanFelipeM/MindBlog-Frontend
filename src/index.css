@@ -1,20 +1,20 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Irish+Grover&display=swap');
 
 :root {
-  /* Colors */
+  /* Dark Theme (Padrão) */
   --bg-primary: #0B0E13;
   --bg-secondary: #14181F;
-  --bg-tertiary: #1f2229;
+  --bg-tertiary: #1E242D;
   
   --text-primary: #F9FAFB;
   --text-secondary: #9DA6AF;
-  --text-muted: #64748b;
+  --text-muted: #64748B;
   
-  --brand-primary: #00d8ff;
-  --brand-hover: #00bce0;
+  --brand-primary: #00D8FF;
+  --brand-hover: #00BCE0;
   
-  --border-color: #2a2e37;
-  --danger: #ef4444;
+  --border-color: #272C35;
+  --danger: #EF4444;
   
   /* Fonts */
   --font-sans: 'Inter', system-ui, Avenir, Helvetica, Arial, sans-serif;
@@ -26,18 +26,20 @@
 }
 
 [data-theme="light"] {
-  --bg-primary: #F4F6F9;
+  /* Light Theme (Slate Elegante) */
+  --bg-primary: #F8FAFC;
   --bg-secondary: #FFFFFF;
-  --bg-tertiary: #E2E8F0;
+  --bg-tertiary: #F1F5F9;
   
   --text-primary: #0F172A;
   --text-secondary: #475569;
-  --text-muted: #64748B;
+  --text-muted: #94A3B8;
   
-  --brand-primary: #0066FF;
-  --brand-hover: #004FCE;
+  --brand-primary: #0284C7;
+  --brand-hover: #0369A1;
   
-  --border-color: #CBD5E1;
+  --border-color: #E2E8F0;
+  --danger: #EF4444;
 }
 
 * {

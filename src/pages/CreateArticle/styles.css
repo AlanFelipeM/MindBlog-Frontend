@@ -26,7 +26,7 @@
 }
 
 .btn-back-dashboard:hover {
-  color: #FFFFFF;
+  color: var(--text-primary);
 }
 
 /* Cabeçalho principal com título e subtítulo */
@@ -38,7 +38,7 @@
   font-family: var(--font-sans);
   font-size: 38px;
   font-weight: 500;
-  color: #FFFFFF;
+  color: var(--text-primary);
   line-height: 1.2;
   margin-bottom: 0.35rem;
 }
@@ -58,8 +58,8 @@
 
 /* Card retangular principal do formulário */
 .create-article-card {
-  background-color: transparent;
-  border: 1px solid #272C35;
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
   border-radius: 0px; /* Cantos 100% retos */
   padding: 2.5rem;
   display: flex;
@@ -83,16 +83,16 @@
 .article-form-label {
   font-size: 14px;
   font-weight: 500;
-  color: #FFFFFF;
+  color: var(--text-primary);
 }
 
 .article-form-input,
 .article-form-select,
 .article-form-textarea {
   width: 100%;
-  background-color: #14181F;
-  border: 1px solid #272C35;
-  color: #FFFFFF;
+  background-color: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
   padding: 0.85rem 1rem;
   font-size: 14px;
   font-weight: 400;
@@ -116,10 +116,15 @@
 .article-form-select {
   cursor: pointer;
   appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23A1A1AA' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%239DA6AF' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right 1rem center;
   padding-right: 2.5rem;
+}
+
+.article-form-select option {
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
 }
 
 .article-form-textarea {
@@ -149,8 +154,8 @@
 
 .btn-upload-file {
   display: inline-block;
-  background-color: #14181F;
-  border: 1px solid #272C35;
+  background-color: var(--bg-primary);
+  border: 1px solid var(--border-color);
   color: var(--text-secondary);
   font-size: 13px;
   font-weight: 300;
@@ -162,7 +167,7 @@
 
 .btn-upload-file:hover {
   border-color: var(--brand-primary);
-  color: #FFFFFF;
+  color: var(--text-primary);
 }
 
 .hidden-file-input {
@@ -180,9 +185,9 @@
 }
 
 .btn-add-tag {
-  background-color: #14181F;
-  border: 1px solid #272C35;
-  color: #FFFFFF;
+  background-color: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
   padding: 0.85rem 1.25rem;
   font-size: 14px;
   font-weight: 400;
@@ -203,9 +208,9 @@
 }
 
 .tag-badge-item {
-  background-color: #14181F;
-  border: 1px solid #272C35;
-  color: #FFFFFF;
+  background-color: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
   font-size: 12px;
   font-weight: 400;
   padding: 0.35rem 0.65rem;
@@ -254,7 +259,7 @@
 
 .btn-publish-article {
   flex: 1;
-  background-color: var(--brand-primary); /* Cor ciano #00D8FF */
+  background-color: var(--brand-primary);
   color: #000000;
   font-weight: 600;
   font-size: 15px;
@@ -271,8 +276,8 @@
 
 .btn-cancel-article {
   background-color: transparent;
-  border: 1px solid #272C35;
-  color: #FFFFFF;
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
   font-weight: 400;
   font-size: 15px;
   padding: 0.95rem 2rem;
@@ -282,7 +287,7 @@
 }
 
 .btn-cancel-article:hover {
-  border-color: #FFFFFF;
+  border-color: var(--brand-primary);
 }
 
 /* Mensagem de alerta de erro */

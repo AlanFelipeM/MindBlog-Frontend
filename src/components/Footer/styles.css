@@ -1,5 +1,6 @@
 .footer {
-  background-color: #14181F;
+  background-color: var(--bg-secondary);
+  border-top: 1px solid var(--border-color);
   padding: 60px 40px 20px; 
   margin-top: auto; 
 }
@@ -79,7 +80,7 @@
 .footer-bottom {
   width: 100%;
   padding: 2rem 40px 0;
-  border-top: 1px solid #272C35;
+  border-top: 1px solid var(--border-color);
   text-align: center;
   color: var(--text-muted);
   font-size: 0.75rem;
