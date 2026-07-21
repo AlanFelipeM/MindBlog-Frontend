@@ -26,7 +26,7 @@ export const Header = () => {
           <div className="header-divider" />
 
           <button className="theme-toggle" aria-label="Toggle theme">
-            <Moon size={20} color="#FFFFFF" />
+            <Moon size={20} />
           </button>
 
           {isAuthenticated ? (
