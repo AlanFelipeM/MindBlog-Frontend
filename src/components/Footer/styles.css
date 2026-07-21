@@ -5,9 +5,8 @@
 }
 
 .footer-container {
-  max-width: 1360px;
-  margin: 0 auto;
-  padding: 0 2rem;
+  width: 100%;
+  padding: 0 40px;
   display: grid;
   grid-template-columns: 2fr 1fr 1fr;
   gap: 3rem;
@@ -72,9 +71,8 @@
 }
 
 .footer-bottom {
-  max-width: 1360px;
-  margin: 0 auto;
-  padding: 2rem 2rem 0;
+  width: 100%;
+  padding: 2rem 40px 0;
   border-top: 1px solid #272C35;
   text-align: center;
   color: var(--text-muted);
