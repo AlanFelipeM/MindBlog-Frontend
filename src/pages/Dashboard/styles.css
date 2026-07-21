@@ -6,6 +6,33 @@
   padding: 3rem 1.5rem 6rem 1.5rem;
 }
 
+/* Alerta Toast de Sucesso ao publicar/editar artigo */
+.dashboard-toast-success {
+  background-color: rgba(0, 216, 255, 0.1);
+  border: 1px solid var(--brand-primary);
+  color: var(--brand-primary);
+  padding: 0.9rem 1.25rem;
+  border-radius: 0px;
+  font-size: 14px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  margin-bottom: 2rem;
+  animation: toastFadeIn 0.3s ease-out;
+}
+
+@keyframes toastFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 /* Seção do cabeçalho superior do Dashboard */
 .dashboard-header-row {
   display: flex;

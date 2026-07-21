@@ -8,7 +8,8 @@ import {
   Heart, 
   TrendingUp, 
   Edit, 
-  Trash2 
+  Trash2,
+  CheckCircle 
 } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import './styles.css';
@@ -43,8 +44,22 @@ export const Dashboard = () => {
   const [myArticles, setMyArticles] = useState<DashboardArticle[]>([]);
   const [activities] = useState<ActivityItem[]>([]);
 
+  // Estado para toast de mensagem de sucesso ao publicar/editar artigo
+  const [toastMessage, setToastMessage] = useState<string | null>(null);
+
   // Nome exibido na saudação inicial do dashboard
   const userName = user?.name || 'Usuário';
+
+  // Verifica se há mensagem de sucesso pendente no localStorage
+  useEffect(() => {
+    const msg = localStorage.getItem('@MindBlog:toastMessage');
+    if (msg) {
+      setToastMessage(msg);
+      localStorage.removeItem('@MindBlog:toastMessage');
+      const timer = setTimeout(() => setToastMessage(null), 4000);
+      return () => clearTimeout(timer);
+    }
+  }, []);
 
   // Busca artigos reais do banco de dados/API para o usuário logado
   useEffect(() => {
@@ -129,6 +144,14 @@ export const Dashboard = () => {
 
   return (
     <div className="dashboard-page-container">
+      {/* Alerta toast de confirmação de publicação/edição */}
+      {toastMessage && (
+        <div className="dashboard-toast-success">
+          <CheckCircle size={18} />
+          <span>{toastMessage}</span>
+        </div>
+      )}
+
       {/* Seção superior do Dashboard: título de boas-vindas e botões de ação principal */}
       <div className="dashboard-header-row">
         <div className="dashboard-title-box">

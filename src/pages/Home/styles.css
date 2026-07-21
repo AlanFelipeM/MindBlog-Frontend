@@ -217,7 +217,7 @@
 .article-card:hover {
   transform: translateY(-6px);
   border-color: var(--brand-primary);
-  box-shadow: 0 10px 25px rgba(0, 216, 255, 0.15);
+  box-shadow: none !important;
 }
 
 .card-image {

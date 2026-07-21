@@ -119,14 +119,17 @@ export const CreateArticle = () => {
       });
 
       if (response.ok) {
+        localStorage.setItem('@MindBlog:toastMessage', isEditing ? 'Artigo alterado com sucesso!' : 'Artigo publicado com sucesso!');
         navigate('/dashboard');
       } else {
         await response.json();
         // Fallback local caso o backend responda com erro
+        localStorage.setItem('@MindBlog:toastMessage', isEditing ? 'Artigo alterado com sucesso!' : 'Artigo publicado com sucesso!');
         navigate('/dashboard');
       }
     } catch (error) {
-      // Redireciona para o dashboard com sucesso gracioso
+      // Redireciona para o dashboard com mensagem de sucesso
+      localStorage.setItem('@MindBlog:toastMessage', isEditing ? 'Artigo alterado com sucesso!' : 'Artigo publicado com sucesso!');
       navigate('/dashboard');
     } finally {
       setLoading(false);

@@ -88,7 +88,7 @@ Com o avanço da IA, questões éticas se tornam cada vez mais importantes. É c
 export const ArticleDetail = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, user } = useAuth();
 
   // Estados locais para controle do artigo, carregamento e comentários novos
   const [article, setArticle] = useState<Article | null>(null);
@@ -97,6 +97,9 @@ export const ArticleDetail = () => {
   const [newCommentContent, setNewCommentContent] = useState('');
 
   useEffect(() => {
+    // Carrega comentários salvos previamente para este artigo no localStorage
+    const storedCommentsStr = localStorage.getItem(`@MindBlog:comments_${id}`);
+
     // Tenta carregar o artigo a partir da API do backend
     fetch(`http://localhost:3333/api/articles/${id}`)
       .then((res) => {
@@ -115,16 +118,33 @@ export const ArticleDetail = () => {
           views: data.views || (data.id * 143) % 1000,
           likes: data.likes || (data.id * 7) % 89,
           tags: data.tags || ['Desenvolvimento web', 'Inteligência Artificial', 'Desenvolvimento backend'],
-          commentsList: [] // Artigos criados na API iniciam com lista de comentários vazia
+          commentsList: []
         };
         setArticle(enriched);
-        setComments([]);
+
+        if (storedCommentsStr) {
+          try {
+            setComments(JSON.parse(storedCommentsStr));
+          } catch {
+            setComments([]);
+          }
+        } else {
+          setComments([]);
+        }
       })
       .catch(() => {
         // Fallback caso a API falhe ou o ID seja 1 (ID simulado do Figma)
         if (id === '1' || !id) {
           setArticle(FIGMA_MOCK_ARTICLE);
-          setComments(FIGMA_MOCK_ARTICLE.commentsList);
+          if (storedCommentsStr) {
+            try {
+              setComments(JSON.parse(storedCommentsStr));
+            } catch {
+              setComments(FIGMA_MOCK_ARTICLE.commentsList);
+            }
+          } else {
+            setComments(FIGMA_MOCK_ARTICLE.commentsList);
+          }
         } else {
           // Se for outro ID inexistente, redireciona de volta para a Home
           navigate('/');
@@ -140,25 +160,39 @@ export const ArticleDetail = () => {
     e.preventDefault();
     if (!newCommentContent.trim()) return;
 
-    // Criamos o novo comentário no estado local simulando o banco de dados
+    // Utiliza o nome e avatar reais do usuário autenticado no sistema
+    const authorName = user?.name || 'Usuário';
+    const authorAvatar = user?.avatar || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&h=150&q=80';
+
     const newComment: Comment = {
       id: Date.now(),
-      authorName: 'John Doe', // Nome do usuário logado conforme simulado no Figma
-      authorAvatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&h=150&q=80',
+      authorName,
+      authorAvatar,
       date: new Date().toISOString(),
       content: newCommentContent,
       likes: 0
     };
 
-    setComments((prev) => [...prev, newComment]);
+    const updatedComments = [...comments, newComment];
+    setComments(updatedComments);
+
+    // Persiste os comentários no localStorage para garantir que não sumam no F5
+    if (id) {
+      localStorage.setItem(`@MindBlog:comments_${id}`, JSON.stringify(updatedComments));
+    }
+
     setNewCommentContent('');
   };
 
   // Função para incrementar curtidas no comentário selecionado
   const handleLikeComment = (commentId: number) => {
-    setComments(prev =>
-      prev.map(c => (c.id === commentId ? { ...c, likes: c.likes + 1 } : c))
-    );
+    setComments(prev => {
+      const next = prev.map(c => (c.id === commentId ? { ...c, likes: c.likes + 1 } : c));
+      if (id) {
+        localStorage.setItem(`@MindBlog:comments_${id}`, JSON.stringify(next));
+      }
+      return next;
+    });
   };
 
   // Função auxiliar para formatação de data no padrão DD/MM/YYYY
