@@ -1,8 +1,8 @@
 .footer {
-  background-color: var(--bg-primary);
-  border-top: 1px solid var(--border-color);
-  padding: 4rem 0 2rem;
-  margin-top: auto; /* Pushes footer to bottom */
+  background-color: #14181F;
+  border-top: 1px solid #272C35;
+  padding: 60px 40px; /* Adapting p-15 and p-10 proportionally */
+  margin-top: auto; 
 }
 
 .footer-container {
