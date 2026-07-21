@@ -29,17 +29,12 @@ export const Header = () => {
             <Moon size={20} />
           </button>
 
-          {isAuthenticated ? (
+          {isAuthenticated && (
             <div className="user-menu">
               <button className="user-menu-btn">
                 <User size={20} />
               </button>
-              {/* Dropdown would go here later */}
             </div>
-          ) : (
-            <Link to="/login" className="nav-link nav-login">
-              Entrar
-            </Link>
           )}
         </nav>
       </div>
