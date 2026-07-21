@@ -1,7 +1,6 @@
 .footer {
-  background-color: #14181F;
-  border-top: 1px solid #272C35;
-  padding: 60px 40px; /* Adapting p-15 and p-10 proportionally */
+  background-color: #0B0E13;
+  padding: 60px 40px 20px; 
   margin-top: auto; 
 }
 
@@ -75,7 +74,8 @@
 .footer-bottom {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 2rem;
+  padding: 2rem 2rem 0;
+  border-top: 1px solid #272C35;
   text-align: center;
   color: var(--text-muted);
   font-size: 0.75rem;

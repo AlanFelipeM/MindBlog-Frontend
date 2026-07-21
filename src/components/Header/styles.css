@@ -31,13 +31,21 @@
 .header-nav {
   display: flex;
   align-items: center;
-  gap: 2rem;
+  gap: 1.5rem;
+}
+
+.header-divider {
+  width: 1px;
+  height: 24px;
+  background-color: #272C35;
+  margin: 0 0.5rem;
 }
 
 .nav-link {
-  font-size: 0.875rem;
-  font-weight: 500;
   color: var(--text-secondary);
+  font-size: 14px;
+  font-weight: 500;
+  transition: color var(--transition-fast);
 }
 
 .nav-link:hover {

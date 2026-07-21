@@ -23,6 +23,8 @@ export const Header = () => {
           <Link to="/" className="nav-link">Home</Link>
           <Link to="/artigos" className="nav-link">Artigos</Link>
           
+          <div className="header-divider" />
+
           <button className="theme-toggle" aria-label="Toggle theme">
             <Moon size={20} />
           </button>
