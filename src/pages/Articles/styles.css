@@ -1,0 +1,346 @@
+/* Container principal da página de listagem de artigos */
+.articles-page-container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 3rem 1.5rem 6rem 1.5rem;
+}
+
+/* Seção superior de títulos da página */
+.articles-header-section {
+  margin-bottom: 2.5rem;
+}
+
+.articles-page-title {
+  font-family: var(--font-sans);
+  font-size: 40px;
+  font-weight: 600;
+  color: #FFFFFF;
+  margin-bottom: 0.5rem;
+  line-height: 1.2;
+}
+
+.articles-page-subtitle {
+  font-size: 18px;
+  font-weight: 300;
+  color: var(--text-secondary);
+}
+
+/* Barra de ferramentas com input de busca, filtro por categoria e controles de exibição */
+.articles-toolbar-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 3rem;
+  flex-wrap: wrap;
+}
+
+/* Wrapper do campo de pesquisa por texto com ícone */
+.search-input-wrapper {
+  position: relative;
+  flex: 1;
+  min-width: 280px;
+}
+
+.search-icon {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-secondary);
+  pointer-events: none;
+}
+
+.search-input {
+  width: 100%;
+  background-color: #14181F;
+  border: 1px solid #272C35;
+  color: #FFFFFF;
+  padding: 0.75rem 1rem 0.75rem 2.75rem;
+  font-size: 14px;
+  border-radius: 0px; /* Cantos 100% retos */
+  outline: none;
+  transition: border-color var(--transition-fast);
+}
+
+.search-input:focus {
+  border-color: var(--brand-primary);
+}
+
+.search-input::placeholder {
+  color: var(--text-secondary);
+}
+
+/* Agrupamento de filtro por categoria e botões de alternância de exibição */
+.toolbar-controls-group {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+/* Select de categoria com ícone de funil */
+.category-filter-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.filter-icon {
+  position: absolute;
+  left: 0.85rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-secondary);
+  pointer-events: none;
+}
+
+.category-select {
+  background-color: #14181F;
+  border: 1px solid #272C35;
+  color: #FFFFFF;
+  padding: 0.75rem 2.25rem 0.75rem 2.5rem;
+  font-size: 14px;
+  border-radius: 0px; /* Cantos 100% retos */
+  cursor: pointer;
+  outline: none;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23A1A1AA' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.85rem center;
+}
+
+.category-select:focus {
+  border-color: var(--brand-primary);
+}
+
+.category-select option {
+  background-color: #14181F;
+  color: #FFFFFF;
+}
+
+/* Caixa dos botões de alternância de modo de exibição */
+.view-mode-toggle-box {
+  display: flex;
+  border: 1px solid #272C35;
+}
+
+.view-toggle-btn {
+  background-color: #14181F;
+  border: none;
+  color: var(--text-secondary);
+  width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border-radius: 0px; /* Cantos 100% retos */
+  transition: all var(--transition-fast);
+}
+
+.view-toggle-btn:hover {
+  color: #FFFFFF;
+}
+
+/* Destaque do botão ativo em laranja escura conforme mockup do Figma */
+.view-toggle-btn.active {
+  background-color: #D97706;
+  color: #FFFFFF;
+}
+
+/* Mensagem de ausência de resultados */
+.no-articles-found {
+  padding: 4rem 2rem;
+  text-align: center;
+  color: var(--text-secondary);
+  background-color: #14181F;
+  border: 1px solid #272C35;
+}
+
+/* ==========================================================================
+   MODO GRID (Cards Completos de 3 Colunas)
+   ========================================================================== */
+.articles-list-container.grid-mode {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+}
+
+@media (max-width: 992px) {
+  .articles-list-container.grid-mode {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .articles-list-container.grid-mode {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Card individual do modo Grid */
+.grid-mode .article-card-item {
+  background-color: #14181F;
+  border: 1px solid #272C35;
+  border-radius: 0px; /* Cantos 100% retos */
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+  transition: transform var(--transition-fast), border-color var(--transition-fast);
+}
+
+.grid-mode .article-card-item:hover {
+  transform: translateY(-4px);
+  border-color: rgba(217, 119, 6, 0.5);
+}
+
+.grid-mode .article-card-image-box {
+  width: 100%;
+  height: 200px;
+  overflow: hidden;
+  background-color: #0B0E13;
+}
+
+.grid-mode .article-card-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.grid-mode .article-card-content {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.card-top-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.85rem;
+  font-size: 12px;
+}
+
+.card-category-tag {
+  background-color: #1E242D;
+  color: var(--text-secondary);
+  padding: 0.2rem 0.5rem;
+  border-radius: 0px;
+  font-weight: 500;
+}
+
+.card-publish-date {
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.card-article-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #FFFFFF;
+  margin-bottom: 0.75rem;
+  line-height: 1.4;
+}
+
+.card-article-excerpt {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  flex: 1;
+}
+
+.card-footer-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 1rem;
+  border-top: 1px solid #272C35;
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+.card-author-name {
+  color: var(--text-muted);
+}
+
+.card-stats-info {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.stat-badge {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+/* ==========================================================================
+   MODO LISTA (Listagem em Linha / Horizontal)
+   ========================================================================== */
+.articles-list-container.list-mode {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.list-mode .article-card-item {
+  background-color: #14181F;
+  border: 1px solid #272C35;
+  border-radius: 0px; /* Cantos 100% retos */
+  overflow: hidden;
+  display: flex;
+  flex-direction: row;
+  cursor: pointer;
+  transition: transform var(--transition-fast), border-color var(--transition-fast);
+}
+
+.list-mode .article-card-item:hover {
+  border-color: rgba(217, 119, 6, 0.5);
+  transform: translateX(4px);
+}
+
+.list-mode .article-card-image-box {
+  width: 280px;
+  min-width: 280px;
+  height: auto;
+  min-height: 180px;
+  overflow: hidden;
+  background-color: #0B0E13;
+}
+
+.list-mode .article-card-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.list-mode .article-card-content {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  justify-content: space-between;
+}
+
+@media (max-width: 768px) {
+  .list-mode .article-card-item {
+    flex-direction: column;
+  }
+
+  .list-mode .article-card-image-box {
+    width: 100%;
+    min-width: 100%;
+    height: 200px;
+  }
+}

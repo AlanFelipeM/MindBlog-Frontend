@@ -132,10 +132,6 @@ export const Home = () => {
       });
   }, []);
 
-  const handleScrollToArticles = () => {
-    articlesSectionRef.current?.scrollIntoView({ behavior: 'smooth' });
-  };
-
   const handleNewsletterSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (newsletterEmail) {
@@ -179,9 +175,9 @@ export const Home = () => {
             Artigos sobre IA, desenvolvimento, DevOps e as últimas tendências tecnológicas
           </p>
           <div className="hero-buttons">
-            <button onClick={handleScrollToArticles} className="btn-hero-primary">
+            <Link to="/artigos" className="btn-hero-primary">
               Explorar Artigos
-            </button>
+            </Link>
             <Link to="/register" className="btn-hero-outline">
               Começar a Escrever
             </Link>
@@ -212,9 +208,9 @@ export const Home = () => {
               <h2 className="section-title">Artigos em Destaque</h2>
               <p className="section-subtitle">Os melhores conteúdos selecionados para você</p>
             </div>
-            <button onClick={handleScrollToArticles} className="ver-todos-link">
+            <Link to="/artigos" className="ver-todos-link">
               Ver todos <ArrowRight size={16} />
-            </button>
+            </Link>
           </div>
 
           <div className="articles-grid featured-grid">
