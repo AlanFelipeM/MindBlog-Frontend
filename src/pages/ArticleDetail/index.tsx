@@ -12,6 +12,7 @@ interface Comment {
   date: string;
   content: string;
   likes: number;
+  isLiked?: boolean;
 }
 
 // Interface que descreve a estrutura de um artigo completo
@@ -195,10 +196,20 @@ export const ArticleDetail = () => {
     setNewCommentContent('');
   };
 
-  // Função para incrementar curtidas no comentário selecionado
+  // Função para alternar a curtida do comentário (permite curtir/descurtir 1 vez por usuário)
   const handleLikeComment = (commentId: number) => {
     setComments(prev => {
-      const next = prev.map(c => (c.id === commentId ? { ...c, likes: c.likes + 1 } : c));
+      const next = prev.map(c => {
+        if (c.id === commentId) {
+          const alreadyLiked = c.isLiked || false;
+          return {
+            ...c,
+            likes: alreadyLiked ? Math.max(0, c.likes - 1) : c.likes + 1,
+            isLiked: !alreadyLiked
+          };
+        }
+        return c;
+      });
       if (id) {
         localStorage.setItem(`@MindBlog:comments_${id}`, JSON.stringify(next));
       }
@@ -420,11 +431,11 @@ export const ArticleDetail = () => {
                   <div className="comment-actions-box">
                     <button 
                       onClick={() => handleLikeComment(comment.id)} 
-                      className="comment-like-btn"
+                      className={`comment-like-btn ${comment.isLiked ? 'liked' : ''}`}
                       aria-label="Curtir comentário"
-                      title="Curtir"
+                      title={comment.isLiked ? "Descurtir comentário" : "Curtir comentário"}
                     >
-                      <Heart size={14} /> {comment.likes}
+                      <Heart size={14} fill={comment.isLiked ? '#EF4444' : 'none'} color={comment.isLiked ? '#EF4444' : 'currentColor'} /> {comment.likes}
                     </button>
 
                     {isAuthenticated && (
