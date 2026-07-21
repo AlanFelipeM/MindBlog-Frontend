@@ -1,5 +1,7 @@
 import { Link } from 'react-router-dom';
-import { FaLinkedin, FaGithub, FaTwitter } from 'react-icons/fa';
+import iconLinkedin from '../../assets/icones/icon-linkedin.png';
+import iconGithub from '../../assets/icones/icon-github.png';
+import iconX from '../../assets/icones/icon-X.png';
 import './styles.css';
 
 export const Footer = () => {
@@ -28,9 +30,9 @@ export const Footer = () => {
         <div className="footer-social">
           <h4 className="footer-title">Redes Sociais</h4>
           <div className="social-icons">
-            <a href="#" aria-label="LinkedIn"><FaLinkedin size={20} /></a>
-            <a href="#" aria-label="GitHub"><FaGithub size={20} /></a>
-            <a href="#" aria-label="Twitter"><FaTwitter size={20} /></a>
+            <a href="#" aria-label="LinkedIn"><img src={iconLinkedin} alt="LinkedIn" className="social-icon-img" /></a>
+            <a href="#" aria-label="GitHub"><img src={iconGithub} alt="GitHub" className="social-icon-img" /></a>
+            <a href="#" aria-label="X"><img src={iconX} alt="X" className="social-icon-img" /></a>
           </div>
         </div>
 
