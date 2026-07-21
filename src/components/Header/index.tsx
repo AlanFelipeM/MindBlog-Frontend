@@ -1,16 +1,10 @@
-import { Link, useNavigate } from 'react-router-dom';
-import { Moon, LogOut, User } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { Moon, User } from 'lucide-react';
 import './styles.css';
 
 export const Header = () => {
   // Temporary mock for auth state until context is ready
   const isAuthenticated = false;
-  const navigate = useNavigate();
-
-  const handleLogout = () => {
-    // Implement logout later
-    navigate('/login');
-  };
 
   return (
     <header className="header">
