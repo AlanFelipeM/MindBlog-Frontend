@@ -1,10 +1,12 @@
 import { Link } from 'react-router-dom';
-import { Moon, User } from 'lucide-react';
+import { Moon } from 'lucide-react';
 import './styles.css';
 
+import { useAuth } from '../../contexts/AuthContext';
+
 export const Header = () => {
-  // Temporary mock for auth state until context is ready
-  const isAuthenticated = false;
+  // Conecta o cabeçalho ao estado global de autenticação
+  const { isAuthenticated } = useAuth();
 
   return (
     <header className="header">
@@ -28,7 +30,11 @@ export const Header = () => {
           {isAuthenticated ? (
             <div className="user-menu">
               <button className="user-menu-btn">
-                <User size={20} />
+                <img 
+                  src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&h=150&q=80" 
+                  alt="Avatar do Usuário" 
+                  className="user-avatar-img-header" 
+                />
               </button>
             </div>
           ) : (
