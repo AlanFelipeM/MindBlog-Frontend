@@ -205,7 +205,9 @@ export const Settings = () => {
 
               <div className="account-info-item">
                 <span className="info-item-label">Membro desde</span>
-                <span className="info-item-value">20/01/2026</span>
+                <span className="info-item-value">
+                  {user?.createdAt || new Date().toLocaleDateString('pt-BR')}
+                </span>
               </div>
             </div>
           </div>
