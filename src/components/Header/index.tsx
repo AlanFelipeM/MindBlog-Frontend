@@ -31,16 +31,11 @@ export const Header = () => {
             <Moon size={20} />
           </button>
 
-          {isAuthenticated ? (
+          {isAuthenticated && (
             <div className="user-menu">
               <button className="user-menu-btn">
                 <User size={20} />
               </button>
-            </div>
-          ) : (
-            <div className="auth-actions">
-              <Link to="/login" className="nav-link">Entrar</Link>
-              <Link to="/register" className="nav-register">Cadastrar</Link>
             </div>
           )}
         </nav>
