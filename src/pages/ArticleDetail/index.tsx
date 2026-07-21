@@ -259,24 +259,11 @@ export const ArticleDetail = () => {
         {/* Conteúdo dinâmico do artigo contendo os textos e seções */}
         <div className="article-body-content">
           <h3 className="content-bold-title">{article.title}</h3>
-          <p className="content-paragraph">
-            A inteligência artificial continua a evoluir em um ritmo acelerado. Neste artigo, vamos explorar as principais tendências e inovações que estão moldando o futuro da IA.
-          </p>
-
-          <h4 className="content-section-title">Modelos de Linguagem Avançados</h4>
-          <p className="content-paragraph">
-            Os modelos de linguagem como GPT-4 e além estão se tornando cada vez mais sofisticados, capazes de entender e gerar texto com precisão impressionante.
-          </p>
-
-          <h4 className="content-section-title">Automação Inteligente</h4>
-          <p className="content-paragraph">
-            A automação está alcançando novos patamares com sistemas de IA que podem tomar decisões complexas e adaptar-se a novas situações.
-          </p>
-
-          <h4 className="content-section-title">Ética e Responsabilidade</h4>
-          <p className="content-paragraph">
-            Com o avanço da IA, questões éticas se tornam cada vez mais importantes. É crucial desenvolver sistemas responsáveis e transparentes.
-          </p>
+          {article.content.split('\n\n').map((paragraph, idx) => (
+            <p key={idx} className="content-paragraph">
+              {paragraph}
+            </p>
+          ))}
         </div>
 
         {/* Tags rodando ao final do artigo */}
