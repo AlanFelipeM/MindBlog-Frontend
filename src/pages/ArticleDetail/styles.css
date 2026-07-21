@@ -52,18 +52,16 @@
 .article-category-tag {
   background-color: #D97706; /* Cor laranja escura idêntica ao Figma */
   color: #FFFFFF;
-  font-size: 12px;
-  font-weight: 600;
-  text-transform: uppercase;
+  font-size: 14px;
+  font-weight: 500;
   padding: 0.35rem 0.75rem;
   border-radius: 0px; /* Borda 100% reta */
-  letter-spacing: 0.5px;
 }
 
 .article-main-title {
   font-family: var(--font-sans);
-  font-size: 44px;
-  font-weight: 700;
+  font-size: 48px;
+  font-weight: 500;
   line-height: 1.2;
   color: #FFFFFF;
   margin-bottom: 1rem;
@@ -71,24 +69,24 @@
 
 @media (max-width: 768px) {
   .article-main-title {
-    font-size: 32px;
+    font-size: 36px;
   }
 }
 
 .article-main-subtitle {
   font-family: var(--font-sans);
-  font-size: 18px;
+  font-size: 24px;
   font-weight: 300;
   color: var(--text-secondary);
   line-height: 1.5;
-  margin-bottom: 2rem;
+  margin-bottom: 2.5rem;
 }
 
 .article-divider {
   border: 0;
   height: 1px;
-  background-color: #14181F;
-  margin: 1.5rem 0;
+  background-color: #272C35;
+  margin: 2rem 0;
 }
 
 /* Seção de Autor e Curtidas */
@@ -106,18 +104,16 @@
 }
 
 .author-avatar-img {
-  width: 44px;
-  height: 44px;
+  width: 56px;
+  height: 56px;
   object-fit: cover;
   border-radius: 0px; /* Sem arredondar */
-  border: 1px solid #272C35;
 }
 
 .author-avatar-placeholder {
-  width: 44px;
-  height: 44px;
+  width: 56px;
+  height: 56px;
   background-color: #14181F;
-  border: 1px solid #272C35;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -130,8 +126,8 @@
 }
 
 .author-name-text {
-  font-size: 15px;
-  font-weight: 600;
+  font-size: 16px;
+  font-weight: 500;
   color: #FFFFFF;
   margin-bottom: 0.25rem;
 }
@@ -139,8 +135,8 @@
 .author-sub-meta {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  font-size: 12px;
+  gap: 0.75rem;
+  font-size: 14px;
   color: var(--text-secondary);
 }
 
@@ -151,32 +147,29 @@
 .read-time-box {
   display: flex;
   align-items: center;
-  gap: 0.25rem;
+  gap: 0.35rem;
 }
 
 .article-quick-actions {
   display: flex;
-  gap: 0.75rem;
+  gap: 1rem;
 }
 
 .action-btn {
-  width: 38px;
-  height: 38px;
-  background-color: #14181F;
-  border: 1px solid #272C35;
+  width: 32px;
+  height: 32px;
+  background-color: transparent;
+  border: none;
   color: var(--text-secondary);
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: all var(--transition-fast);
-  border-radius: 0px; /* Botões de ação retos */
+  transition: color var(--transition-fast);
 }
 
 .action-btn:hover {
   color: var(--brand-primary);
-  border-color: var(--brand-primary);
-  background-color: rgba(0, 216, 255, 0.05);
 }
 
 .article-stats-row {

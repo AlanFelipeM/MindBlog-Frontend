@@ -161,11 +161,13 @@ export const ArticleDetail = () => {
     );
   };
 
-  // Função auxiliar para formatação de data simples em português
+  // Função auxiliar para formatação de data no padrão DD/MM/YYYY
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
-    const months = ['jan', 'fev', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez'];
-    return `${date.getDate()} ${months[date.getMonth()]} ${date.getFullYear()}`;
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const year = date.getFullYear();
+    return `${day}/${month}/${year}`;
   };
 
   // Renderiza tela de carregamento caso a chamada de rede esteja pendente
