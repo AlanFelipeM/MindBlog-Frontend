@@ -246,3 +246,28 @@
 .dropdown-item-btn:hover .dropdown-item-icon {
   filter: brightness(1.2);
 }
+
+/* Regras de Responsividade Mobile */
+@media (max-width: 640px) {
+  .header-container {
+    padding: 0 16px;
+  }
+
+  .header-logo {
+    font-size: 24px;
+  }
+
+  .nav-links {
+    gap: 0.5rem;
+    padding-right: 0.5rem;
+  }
+
+  .auth-actions {
+    gap: 0.75rem;
+  }
+
+  .nav-register {
+    padding: 0.4rem 0.85rem;
+    font-size: 13px;
+  }
+}
