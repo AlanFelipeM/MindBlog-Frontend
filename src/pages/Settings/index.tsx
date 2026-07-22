@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, User, Mail, CheckCircle } from 'lucide-react';
+import { ArrowLeft, User, Mail, CheckCircle, Trash2, X, AlertTriangle } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
+import { API_URL } from '../../config/api';
 import './styles.css';
 
 // Avatar padrão de silhueta de site utilizado quando o usuário não insere foto
@@ -9,8 +10,8 @@ const DEFAULT_AVATAR = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/
 
 export const Settings = () => {
   const navigate = useNavigate();
-  // Obtém os dados do usuário e a função de atualização de estado global do AuthContext
-  const { user, login } = useAuth();
+  // Obtém os dados do usuário e as funções globais do AuthContext
+  const { user, login, logout } = useAuth();
 
   // Estados locais para controlar os campos do formulário de configurações do perfil
   const [name, setName] = useState(user?.name || 'John Doe');
@@ -20,6 +21,10 @@ export const Settings = () => {
 
   // Estado para controlar a mensagem de feedback de sucesso ao salvar
   const [showSuccessToast, setShowSuccessToast] = useState(false);
+
+  // Estados de confirmação e exclusão permanente de conta
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   // Sincroniza os estados locais caso o contexto global de usuário mude
   useEffect(() => {
@@ -52,6 +57,28 @@ export const Settings = () => {
     setTimeout(() => {
       setShowSuccessToast(false);
     }, 4000);
+  };
+
+  // Função para excluir a conta do usuário no backend e deslogar
+  const handleDeleteAccount = async () => {
+    setIsDeleting(true);
+    try {
+      const token = localStorage.getItem('@MindBlog:token');
+      if (token) {
+        await fetch(`${API_URL}/users/me`, {
+          method: 'DELETE',
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+      }
+    } catch (error) {
+      console.error('Erro ao excluir conta:', error);
+    } finally {
+      setIsDeleting(false);
+      logout();
+      navigate('/login');
+    }
   };
 
   // Determina a imagem a ser pré-visualizada no perfil (usa o avatar inserido ou o padrão de site)
@@ -91,7 +118,6 @@ export const Settings = () => {
                 alt="Foto de perfil"
                 className="avatar-preview-img"
                 onError={(e) => {
-                  // Caso a URL inserida seja inválida ou quebre, usamos a imagem padrão de site
                   (e.target as HTMLImageElement).src = DEFAULT_AVATAR;
                 }}
               />
@@ -200,7 +226,7 @@ export const Settings = () => {
             <div className="account-info-grid">
               <div className="account-info-item">
                 <span className="info-item-label">Tipo de conta</span>
-                <span className="info-item-value">Admin</span>
+                <span className="info-item-value">Autor / Leitor</span>
               </div>
 
               <div className="account-info-item">
@@ -217,7 +243,65 @@ export const Settings = () => {
             Salvar Alterações
           </button>
         </form>
+
+        {/* Zona de Perigo: Exclusão de Conta */}
+        <div className="danger-zone-card">
+          <div className="danger-zone-header">
+            <AlertTriangle size={18} className="danger-icon" />
+            <h3>Zona de Perigo</h3>
+          </div>
+          <p className="danger-zone-text">
+            Ao excluir sua conta, seus dados pessoais e artigos publicados serão permanentemente removidos.
+          </p>
+          <button
+            type="button"
+            onClick={() => setShowDeleteModal(true)}
+            className="btn-danger-delete"
+          >
+            <Trash2 size={16} /> Excluir Conta
+          </button>
+        </div>
       </div>
+
+      {/* Modal de Confirmação de Exclusão de Conta */}
+      {showDeleteModal && (
+        <div className="modal-overlay">
+          <div className="settings-delete-modal">
+            <div className="delete-modal-header">
+              <h3>Excluir Conta Permanentemente</h3>
+              <button onClick={() => setShowDeleteModal(false)} className="close-modal-icon-btn">
+                <X size={18} />
+              </button>
+            </div>
+            
+            <div className="delete-modal-body">
+              <p>Tem certeza absoluta de que deseja excluir sua conta do <strong>MindBlog</strong>?</p>
+              <p className="delete-warning-subtext">
+                Esta ação é irreversível. Todos os seus dados de perfil e artigos cadastrados serão apagados.
+              </p>
+            </div>
+
+            <div className="delete-modal-footer">
+              <button
+                type="button"
+                onClick={() => setShowDeleteModal(false)}
+                className="btn-cancel-delete-modal"
+                disabled={isDeleting}
+              >
+                Cancelar
+              </button>
+              <button
+                type="button"
+                onClick={handleDeleteAccount}
+                className="btn-confirm-delete-modal"
+                disabled={isDeleting}
+              >
+                {isDeleting ? 'Excluindo...' : 'Sim, Excluir Minha Conta'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
