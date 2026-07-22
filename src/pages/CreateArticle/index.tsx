@@ -74,39 +74,12 @@ export const CreateArticle = () => {
     setTags(tags.filter((t) => t !== tagToRemove));
   };
 
-  // Handler para processar a seleção de arquivo do computador com compressão automática em Canvas
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
-        const rawBase64 = reader.result as string;
-        const img = new Image();
-        img.src = rawBase64;
-        img.onload = () => {
-          const canvas = document.createElement('canvas');
-          const maxDim = 1200;
-          let width = img.width;
-          let height = img.height;
-          if (width > maxDim || height > maxDim) {
-            if (width > height) {
-              height = Math.round((height * maxDim) / width);
-              width = maxDim;
-            } else {
-              width = Math.round((width * maxDim) / height);
-              height = maxDim;
-            }
-          }
-          canvas.width = width;
-          canvas.height = height;
-          const ctx = canvas.getContext('2d');
-          ctx?.drawImage(img, 0, 0, width, height);
-          const compressedBase64 = canvas.toDataURL('image/jpeg', 0.85);
-          setBannerImage(compressedBase64);
-        };
-        img.onerror = () => {
-          setBannerImage(rawBase64);
-        };
+        setBannerImage(reader.result as string);
       };
       reader.readAsDataURL(file);
     }
