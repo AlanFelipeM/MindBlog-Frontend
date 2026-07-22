@@ -259,8 +259,13 @@ export const CreateArticle = () => {
               type="text"
               className="article-form-input"
               placeholder="Cole uma URL de imagem ou selecione um arquivo abaixo..."
-              value={bannerImage.startsWith('data:') ? '📷 Imagem carregada do seu computador' : bannerImage}
-              onChange={(e) => setBannerImage(e.target.value)}
+              value={bannerImage.startsWith('data:') ? 'Imagem carregada do seu computador' : bannerImage}
+              readOnly={bannerImage.startsWith('data:')}
+              onChange={(e) => {
+                if (!bannerImage.startsWith('data:')) {
+                  setBannerImage(e.target.value);
+                }
+              }}
             />
             
             {/* Opção para selecionar foto do computador ou limpar */}
