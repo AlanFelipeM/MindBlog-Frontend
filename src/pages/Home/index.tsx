@@ -2,8 +2,9 @@ import { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Mail, Clock, Eye, Heart, ArrowRight } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
-import { API_URL, DEFAULT_BANNER } from '../../config/api';
+import { API_URL } from '../../config/api';
 import { getRealArticleStats } from '../../utils/stats';
+import { ArticleBanner } from '../../components/ArticleBanner';
 import './styles.css';
 
 interface Article {
@@ -220,7 +221,7 @@ export const Home = () => {
           <div className="articles-grid featured-grid">
             {highlightedArticles.map((art) => (
               <article key={art.id} className="article-card featured-card">
-                <img src={art.bannerImage || DEFAULT_BANNER} alt={art.title} className="card-image" />
+                <ArticleBanner src={art.bannerImage} alt={art.title} className="card-image" />
                 
                 <div className="card-content">
                   <div className="card-meta-top">

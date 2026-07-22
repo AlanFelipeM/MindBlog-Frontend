@@ -1,8 +1,6 @@
-import { DEFAULT_BANNER } from '../config/api';
-
-// Função utilitária que calcula métricas 100% reais para qualquer artigo
+// Função utilitária para calcular métricas de tempo de leitura, visualizações e curtidas dinâmicas
 export function getRealArticleStats(art: any) {
-  // 1. Tempo de Leitura Real: Calculado a partir do total de palavras (média de 200 palavras por minuto)
+  // 1. Tempo de Leitura Real: Calculado a partir da contagem de palavras (média de 200 palavras por minuto)
   const wordCount = art.content ? art.content.trim().split(/\s+/).filter(Boolean).length : 0;
   const readMinutes = Math.max(1, Math.ceil(wordCount / 200));
 
@@ -10,8 +8,8 @@ export function getRealArticleStats(art: any) {
   const storedViews = localStorage.getItem(`@MindBlog:views_${art.id}`);
   const viewsCount = storedViews !== null ? parseInt(storedViews, 10) : (art.views || 0);
 
-  // 3. Curtidas Reais: Armazenadas dinamicamente na lista de curtidas por usuário (inicia em 0 para novos artigos)
-  const storedLikes = localStorage.getItem(`@MindBlog:liked_by_${art.id}`);
+  // 3. Curtidas Reais: Lista de nomes de usuários que curtiram este artigo no localStorage
+  const storedLikes = localStorage.getItem(`@MindBlog:article_liked_by_${art.id}`);
   let likesCount = 0;
   if (storedLikes) {
     try {
@@ -24,13 +22,10 @@ export function getRealArticleStats(art: any) {
     likesCount = art.likes || 0;
   }
 
-  // 4. Imagem do Banner: Se não houver banner customizado, utiliza o banner padrão de tecnologia de alta qualidade
-  const bannerImage = art.bannerImage || DEFAULT_BANNER;
-
   return {
     readTime: `${readMinutes}min`,
     views: viewsCount,
     likes: likesCount,
-    bannerImage,
+    bannerImage: art.bannerImage || null,
   };
 }

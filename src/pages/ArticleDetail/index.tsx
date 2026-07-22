@@ -2,7 +2,8 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { ArrowLeft, Heart, Bookmark, Share2, Clock, Eye, MessageSquare, User, Edit, Trash2, Check, X as CancelIcon } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
-import { API_URL, DEFAULT_BANNER } from '../../config/api';
+import { API_URL } from '../../config/api';
+import { ArticleBanner } from '../../components/ArticleBanner';
 import './styles.css';
 
 // Interface que descreve a estrutura de um comentário
@@ -200,7 +201,7 @@ export const ArticleDetail = () => {
           readTime: `${readMinutes}min`,
           views: currentViews,
           likes: totalLikes,
-          bannerImage: data.bannerImage || DEFAULT_BANNER,
+          bannerImage: data.bannerImage || null,
           tags: data.tags || ['Desenvolvimento web', 'Inteligência Artificial', 'Desenvolvimento backend'],
           commentsList: []
         };
@@ -504,7 +505,7 @@ export const ArticleDetail = () => {
 
         {/* Imagem de banner principal */}
         <div className="article-banner-wrapper">
-          <img src={article.bannerImage || DEFAULT_BANNER} alt={article.title} className="article-banner-img" />
+          <ArticleBanner src={article.bannerImage} alt={article.title} className="article-banner-img" />
         </div>
 
         {/* Conteúdo dinâmico do artigo contendo os textos e seções */}

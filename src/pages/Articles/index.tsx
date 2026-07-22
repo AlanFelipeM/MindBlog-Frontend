@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Search, Filter, LayoutGrid, List, Clock, Eye, Heart, Bookmark } from 'lucide-react';
 import { API_URL } from '../../config/api';
 import { getRealArticleStats } from '../../utils/stats';
+import { ArticleBanner } from '../../components/ArticleBanner';
 import './styles.css';
 
 // Interface que descreve a estrutura de cada artigo na listagem
@@ -290,11 +291,7 @@ export const Articles = () => {
               >
                 {/* Imagem de capa do artigo */}
                 <div className="article-card-image-box">
-                  <img
-                    src={article.bannerImage}
-                    alt={article.title}
-                    className="article-card-img"
-                  />
+                  <ArticleBanner src={article.bannerImage} alt={article.title} className="article-card-img" />
                   <button
                     className={`card-bookmark-btn ${isBookmarked ? 'bookmarked' : ''}`}
                     onClick={(e) => handleToggleBookmark(e, article.id)}
