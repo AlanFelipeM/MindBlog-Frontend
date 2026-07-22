@@ -82,7 +82,7 @@ export const Settings = () => {
     } finally {
       setIsDeleting(false);
       logout();
-      navigate('/login');
+      navigate('/login?deleted=true');
     }
   };
 

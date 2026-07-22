@@ -1,7 +1,7 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import type { FormEvent } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { LogIn, AlertCircle } from 'lucide-react';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
+import { AlertCircle, CheckCircle, LogIn } from 'lucide-react';
 import { Input } from '../../components/Input';
 import { Button } from '../../components/Button';
 import { useAuth } from '../../contexts/AuthContext';
@@ -10,19 +10,28 @@ import './styles.css';
 
 export const Login = () => {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   // Obtém o método de login do estado global de autenticação
   const { login } = useAuth();
 
-  // Estados locais para controlar os campos do formulário e possíveis mensagens de erro
+  // Estados locais para controlar os campos do formulário e mensagens de feedback
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (searchParams.get('deleted') === 'true') {
+      setSuccessMessage('Sua conta foi excluída permanentemente com sucesso!');
+    }
+  }, [searchParams]);
 
   // Função para processar a tentativa de login do usuário
   const handleLogin = async (e: FormEvent) => {
     e.preventDefault();
     setErrorMessage('');
+    setSuccessMessage('');
     setLoading(true);
 
     try {
@@ -76,10 +85,18 @@ export const Login = () => {
       </div>
 
       <div className="auth-card">
+        {/* Notificação de sucesso (ex: conta excluída com sucesso) */}
+        {successMessage && (
+          <div className="auth-success-alert">
+            <CheckCircle size={18} />
+            <span>{successMessage}</span>
+          </div>
+        )}
+
         {/* Notificação de erro de credenciais */}
         {errorMessage && (
           <div className="auth-error-alert">
-            <AlertCircle size={16} />
+            <AlertCircle size={18} />
             <span>{errorMessage}</span>
           </div>
         )}
