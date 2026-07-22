@@ -64,14 +64,14 @@ export const Settings = () => {
     setIsDeleting(true);
     try {
       const token = localStorage.getItem('@MindBlog:token');
-      if (token) {
-        await fetch(`${API_URL}/users/me`, {
-          method: 'DELETE',
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-      }
+      await fetch(`${API_URL}/users/me`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
+        body: JSON.stringify({ email: user?.email || email }),
+      });
     } catch (error) {
       console.error('Erro ao excluir conta:', error);
     } finally {
