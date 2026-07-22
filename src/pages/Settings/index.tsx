@@ -46,32 +46,17 @@ export const Settings = () => {
     const url = `${API_URL}/users/me`;
 
     try {
-      let response;
-      if (avatarFile) {
-        const formData = new FormData();
-        formData.append('name', name);
-        formData.append('avatar', avatarFile);
-
-        response = await fetch(url, {
-          method: 'PUT',
-          headers: {
-            Authorization: `Bearer ${currentToken}`,
-          },
-          body: formData,
-        });
-      } else {
-        response = await fetch(url, {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${currentToken}`,
-          },
-          body: JSON.stringify({
-            name,
-            avatar: avatar.trim() === '' ? null : avatar.trim(),
-          }),
-        });
-      }
+      const response = await fetch(url, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${currentToken}`,
+        },
+        body: JSON.stringify({
+          name,
+          avatar: avatar.trim() === '' ? null : avatar,
+        }),
+      });
 
       if (response.ok) {
         const data = await response.json();
