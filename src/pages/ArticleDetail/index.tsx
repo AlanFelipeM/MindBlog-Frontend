@@ -171,9 +171,14 @@ export const ArticleDetail = () => {
   };
 
   useEffect(() => {
-    // Carrega a lista de usuários que curtiram este artigo
+    // Carrega a lista de usuários que curtiram este artigo no localStorage
     const likedByUsers: string[] = JSON.parse(localStorage.getItem(`@MindBlog:article_liked_by_${id}`) || '[]');
-    const currentUserName = user?.name || '';
+    const currentUserName = user?.name || 'Visitante';
+    
+    // Atualiza o estado de curtida do usuário/visitante atual
+    const hasLiked = likedByUsers.includes(currentUserName);
+    setIsLikedArticle(hasLiked);
+
     // Incrementa e salva a contagem real de visualizações para este artigo no localStorage
     const currentViews = parseInt(localStorage.getItem(`@MindBlog:views_${id}`) || '0', 10) + 1;
     localStorage.setItem(`@MindBlog:views_${id}`, String(currentViews));
@@ -368,7 +373,7 @@ export const ArticleDetail = () => {
 
   // Curte/descurte o artigo preservando curtidas dos demais usuários
   const handleLikeArticle = () => {
-    const currentUserName = user?.name || 'Usuário';
+    const currentUserName = user?.name || 'Visitante';
     const likedByUsers: string[] = JSON.parse(localStorage.getItem(`@MindBlog:article_liked_by_${id}`) || '[]');
 
     let updatedList: string[];

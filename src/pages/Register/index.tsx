@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import type { FormEvent } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { AlertCircle, CheckCircle } from 'lucide-react';
+import { AlertCircle, CheckCircle, Check, ShieldCheck } from 'lucide-react';
 import { Input } from '../../components/Input';
 import { Button } from '../../components/Button';
 import { API_URL } from '../../config/api';
@@ -22,6 +22,10 @@ export const Register = () => {
   const [successMessage, setSuccessMessage] = useState('');
   const [loading, setLoading] = useState(false);
 
+  const isEmailValid = /\S+@\S+\.\S+/.test(email);
+  const isMinLength = password.length >= 6;
+  const isPasswordMatching = confirmPassword.length > 0 && password === confirmPassword;
+
   // Função para processar a criação de nova conta
   const handleRegister = async (e: FormEvent) => {
     e.preventDefault();
@@ -34,18 +38,17 @@ export const Register = () => {
       return;
     }
 
-    const emailRegex = /\S+@\S+\.\S+/;
-    if (!emailRegex.test(email)) {
+    if (!isEmailValid) {
       setErrorMessage('Por favor, informe um endereço de e-mail válido.');
       return;
     }
 
-    if (password.length < 6) {
+    if (!isMinLength) {
       setErrorMessage('A senha deve conter no mínimo 6 caracteres.');
       return;
     }
 
-    if (password !== confirmPassword) {
+    if (!isPasswordMatching) {
       setErrorMessage('As senhas não coincidem. Digite novamente.');
       return;
     }
@@ -100,7 +103,7 @@ export const Register = () => {
         {/* Notificação visual de erro */}
         {errorMessage && (
           <div className="auth-error-alert">
-            <AlertCircle size={16} />
+            <AlertCircle size={18} />
             <span>{errorMessage}</span>
           </div>
         )}
@@ -108,7 +111,7 @@ export const Register = () => {
         {/* Notificação visual de sucesso */}
         {successMessage && (
           <div className="auth-success-alert">
-            <CheckCircle size={16} />
+            <CheckCircle size={18} />
             <span>{successMessage}</span>
           </div>
         )}
@@ -149,6 +152,23 @@ export const Register = () => {
             onChange={(e) => setConfirmPassword(e.target.value)}
             required 
           />
+
+          {/* Regras visuais e interativas de validação de senha e e-mail */}
+          <div className="register-rules-box">
+            <div className="rules-header">
+              <ShieldCheck size={14} className="rules-icon" />
+              <span>Requisitos da Conta</span>
+            </div>
+            <div className={`rule-item ${isEmailValid ? 'valid' : ''}`}>
+              <Check size={13} /> E-mail em formato válido
+            </div>
+            <div className={`rule-item ${isMinLength ? 'valid' : ''}`}>
+              <Check size={13} /> Senha com no mínimo 6 caracteres
+            </div>
+            <div className={`rule-item ${isPasswordMatching ? 'valid' : ''}`}>
+              <Check size={13} /> As senhas são idênticas
+            </div>
+          </div>
 
           <Button type="submit" className="auth-submit-btn" disabled={loading}>
             <img src={usersIcon} alt="" className="auth-btn-icon" />
