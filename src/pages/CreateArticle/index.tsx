@@ -24,9 +24,11 @@ export const CreateArticle = () => {
   const [errorMessage, setErrorMessage] = useState('');
   const [loading, setLoading] = useState(false);
 
-  // Se estiver em modo de edição, busca os dados do artigo para preencher os campos
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  // Se estiver em modo de edição, busca os dados do artigo UMA ÚNICA VEZ para preencher os campos
   useEffect(() => {
-    if (isEditing && id) {
+    if (isEditing && id && !isLoaded) {
       fetch(`${API_URL}/articles`)
         .then((res) => res.json())
         .then((data) => {
@@ -39,12 +41,16 @@ export const CreateArticle = () => {
               if (articleToEdit.bannerImage) {
                 setBannerImage(articleToEdit.bannerImage);
               }
+              if (articleToEdit.category) {
+                setCategory(articleToEdit.category);
+              }
+              setIsLoaded(true);
             }
           }
         })
         .catch((err) => console.error('Erro ao carregar artigo para edição:', err));
     }
-  }, [isEditing, id]);
+  }, [isEditing, id, isLoaded]);
 
   // Função para adicionar uma nova tag à lista
   const handleAddTag = () => {
@@ -261,7 +267,7 @@ export const CreateArticle = () => {
               onChange={(e) => setBannerImage(e.target.value)}
             />
             
-            {/* Opção para selecionar foto do computador */}
+            {/* Opção para selecionar foto do computador ou limpar */}
             <div className="article-file-upload-row">
               <label htmlFor="articleFileInput" className="btn-upload-file">
                 Escolher arquivo do computador
@@ -273,6 +279,25 @@ export const CreateArticle = () => {
                 onChange={handleFileUpload}
                 className="hidden-file-input"
               />
+              {bannerImage && (
+                <button
+                  type="button"
+                  onClick={() => setBannerImage('')}
+                  className="btn-clear-image"
+                  style={{
+                    background: 'transparent',
+                    border: '1px solid rgba(239, 68, 68, 0.4)',
+                    color: '#f87171',
+                    padding: '8px 16px',
+                    borderRadius: '8px',
+                    cursor: 'pointer',
+                    fontSize: '13px',
+                    marginLeft: '10px'
+                  }}
+                >
+                  Limpar Imagem
+                </button>
+              )}
             </div>
           </div>
 
