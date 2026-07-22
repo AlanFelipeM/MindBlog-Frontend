@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Search, Filter, LayoutGrid, List, Clock, Eye, Heart, Bookmark } from 'lucide-react';
 import { API_URL } from '../../config/api';
+import { getRealArticleStats } from '../../utils/stats';
 import './styles.css';
 
 // Interface que descreve a estrutura de cada artigo na listagem
@@ -154,18 +155,22 @@ export const Articles = () => {
       .then((res) => res.json())
       .then((data) => {
         if (Array.isArray(data) && data.length > 0) {
-          const enriched = data.map((art: any) => ({
-            ...art,
-            excerpt: art.excerpt || art.content || '',
-            category: art.category || 'Desenvolvimento web',
-            readTime: art.readTime || '5min',
-            views: art.views || 0,
-            likes: art.likes || 0,
-            author: {
-              name: art.author?.name || 'John Doe',
-              avatar: art.author?.avatar || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=120&q=80',
-            },
-          }));
+          const enriched = data.map((art: any) => {
+            const stats = getRealArticleStats(art);
+            return {
+              ...art,
+              excerpt: art.excerpt || art.content || '',
+              category: art.category || 'Desenvolvimento web',
+              readTime: stats.readTime,
+              views: stats.views,
+              likes: stats.likes,
+              bannerImage: stats.bannerImage,
+              author: {
+                name: art.author?.name || 'John Doe',
+                avatar: art.author?.avatar || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=120&q=80',
+              },
+            };
+          });
           setArticles(enriched);
         }
       })

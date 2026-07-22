@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { ArrowLeft, Heart, Bookmark, Share2, Clock, Eye, MessageSquare, User, Edit, Trash2, Check, X as CancelIcon } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
-import { API_URL } from '../../config/api';
+import { API_URL, DEFAULT_BANNER } from '../../config/api';
 import './styles.css';
 
 // Interface que descreve a estrutura de um comentário
@@ -173,7 +173,9 @@ export const ArticleDetail = () => {
     // Carrega a lista de usuários que curtiram este artigo
     const likedByUsers: string[] = JSON.parse(localStorage.getItem(`@MindBlog:article_liked_by_${id}`) || '[]');
     const currentUserName = user?.name || '';
-    setIsLikedArticle(likedByUsers.includes(currentUserName));
+    // Incrementa e salva a contagem real de visualizações para este artigo no localStorage
+    const currentViews = parseInt(localStorage.getItem(`@MindBlog:views_${id}`) || '0', 10) + 1;
+    localStorage.setItem(`@MindBlog:views_${id}`, String(currentViews));
 
     // Carrega comentários salvos previamente para este artigo no localStorage
     const storedCommentsStr = localStorage.getItem(`@MindBlog:comments_${id}`);
@@ -185,18 +187,20 @@ export const ArticleDetail = () => {
         return res.json();
       })
       .then((data) => {
-        // Mapeia os campos da API adicionando os dados necessários do Figma
-        const wordCount = data.content ? data.content.split(/\s+/).length : 0;
+        // Mapeia os campos da API calculando o tempo de leitura e visualizações reais
+        const wordCount = data.content ? data.content.trim().split(/\s+/).filter(Boolean).length : 0;
         const readMinutes = Math.max(1, Math.ceil(wordCount / 200));
         const baseLikes = data.likes || 0;
-        setArticleLikes(baseLikes + likedByUsers.length);
+        const totalLikes = baseLikes + likedByUsers.length;
+        setArticleLikes(totalLikes);
         
         const enriched: Article = {
           ...data,
           category: data.category || 'Desenvolvimento web',
           readTime: `${readMinutes}min`,
-          views: data.views || (data.id * 143) % 1000,
-          likes: baseLikes + likedByUsers.length,
+          views: currentViews,
+          likes: totalLikes,
+          bannerImage: data.bannerImage || DEFAULT_BANNER,
           tags: data.tags || ['Desenvolvimento web', 'Inteligência Artificial', 'Desenvolvimento backend'],
           commentsList: []
         };
@@ -498,15 +502,9 @@ export const ArticleDetail = () => {
           <span className="stat-item"><MessageSquare size={14} /> {comments.length} comentários</span>
         </div>
 
-        {/* Imagem de banner principal ou placeholder retangular */}
+        {/* Imagem de banner principal */}
         <div className="article-banner-wrapper">
-          {article.bannerImage ? (
-            <img src={article.bannerImage} alt={article.title} className="article-banner-img" />
-          ) : (
-            <div className="article-banner-placeholder">
-              <span>Lorem ipsum</span>
-            </div>
-          )}
+          <img src={article.bannerImage || DEFAULT_BANNER} alt={article.title} className="article-banner-img" />
         </div>
 
         {/* Conteúdo dinâmico do artigo contendo os textos e seções */}

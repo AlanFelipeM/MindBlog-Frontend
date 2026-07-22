@@ -12,7 +12,7 @@ import {
   CheckCircle 
 } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
-import { API_URL } from '../../config/api';
+import { API_URL, DEFAULT_BANNER } from '../../config/api';
 import './styles.css';
 
 // Interface que representa a estrutura de um artigo exibido no painel do dashboard
@@ -292,13 +292,7 @@ export const Dashboard = () => {
                 <div key={art.id} className="my-article-item-card">
                   {/* Banner/Imagem miniatura do artigo */}
                   <div className="my-article-thumb-box">
-                    {art.bannerImage ? (
-                      <img src={art.bannerImage} alt={art.title} className="my-article-thumb-img" />
-                    ) : (
-                      <div className="my-article-thumb-placeholder">
-                        <span>Lorem ipsum</span>
-                      </div>
-                    )}
+                    <img src={art.bannerImage || DEFAULT_BANNER} alt={art.title} className="my-article-thumb-img" />
                   </div>
 
                   {/* Informações detalhadas do artigo */}

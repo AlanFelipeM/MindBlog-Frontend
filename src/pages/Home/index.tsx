@@ -1,8 +1,9 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Mail, Clock, Eye, Heart, ArrowRight } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
-import { API_URL } from '../../config/api';
+import { API_URL, DEFAULT_BANNER } from '../../config/api';
+import { getRealArticleStats } from '../../utils/stats';
 import './styles.css';
 
 interface Article {
@@ -15,8 +16,7 @@ interface Article {
     name: string;
     email: string;
   };
-  // Métricas calculadas dinamicamente ou geradas por amostragem
-  category?: string;
+  category: string;
   readTime?: string;
   views?: number;
   likes?: number;
@@ -25,75 +25,75 @@ interface Article {
 const MOCK_ARTICLES: Article[] = [
   {
     id: 1,
-    title: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
-    content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam in augue ligula. Donec sed eros vel lacus condimentum sollicitudin...',
-    bannerImage: null,
-    publishedAt: '2025-10-04T12:00:00.000Z',
-    author: { name: 'John Doe', email: 'john@example.com' },
+    title: 'Desvendando a Arquitetura Serverless e Bancos Distribuídos em 2026',
+    content: 'Descubra como a arquitetura serverless em conjunto com bancos de dados relacionais distribuídos como o TiDB Cloud está revolucionando a escalabilidade de aplicações web modernas...',
+    bannerImage: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=800&q=80',
+    publishedAt: '2026-07-20T12:00:00.000Z',
+    author: { name: 'Lucas Silva', email: 'lucas@mindblog.com' },
     category: 'Desenvolvimento web',
-    readTime: '6min',
-    views: 122,
-    likes: 80
+    readTime: '5min',
+    views: 342,
+    likes: 89
   },
   {
     id: 2,
-    title: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
-    content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam in augue ligula. Donec sed eros vel lacus condimentum sollicitudin...',
-    bannerImage: null,
-    publishedAt: '2025-10-04T11:00:00.000Z',
-    author: { name: 'John Doe', email: 'john@example.com' },
+    title: 'Boas Práticas de Desenvolvimento com TypeScript, Node.js e Express',
+    content: 'Entenda os princípios essenciais para estruturar rotas limpas, middlewares de autenticação JWT e validação de dados em APIs RESTful de alta performance...',
+    bannerImage: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=800&q=80',
+    publishedAt: '2026-07-19T11:00:00.000Z',
+    author: { name: 'Mariana Costa', email: 'mariana@mindblog.com' },
     category: 'Desenvolvimento web',
     readTime: '6min',
-    views: 122,
-    likes: 95 // Artigo com maior quantidade de curtidas, utilizado para destaque ativo
+    views: 512,
+    likes: 142
   },
   {
     id: 3,
-    title: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
-    content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam in augue ligula. Donec sed eros vel lacus condimentum sollicitudin...',
-    bannerImage: null,
-    publishedAt: '2025-10-04T10:00:00.000Z',
-    author: { name: 'John Doe', email: 'john@example.com' },
+    title: 'Como Construir Interfaces Reativas e Performáticas com React 19',
+    content: 'Explore as novidades do React 19, componentes assíncronos e como gerenciamos estados locais e globais sem comprometer a fluidez da aplicação...',
+    bannerImage: 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=800&q=80',
+    publishedAt: '2026-07-18T10:00:00.000Z',
+    author: { name: 'Rafael Mendes', email: 'rafael@mindblog.com' },
     category: 'Desenvolvimento web',
-    readTime: '6min',
-    views: 122,
-    likes: 45
+    readTime: '4min',
+    views: 280,
+    likes: 64
   },
   {
     id: 4,
-    title: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
-    content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam in augue ligula. Donec sed eros vel lacus condimentum sollicitudin...',
-    bannerImage: null,
-    publishedAt: '2025-10-04T09:00:00.000Z',
-    author: { name: 'John Doe', email: 'john@example.com' },
-    category: 'Desenvolvimento web',
-    readTime: '6min',
-    views: 122,
-    likes: 12
+    title: 'Automação de Deploy Contínuo com Vercel, Render e GitHub Actions',
+    content: 'Um passo a passo completo sobre como integrar repositórios desacoplados de Frontend e Backend com ambientes de homologação e produção automáticos...',
+    bannerImage: 'https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&w=800&q=80',
+    publishedAt: '2026-07-17T09:00:00.000Z',
+    author: { name: 'Camila Rocha', email: 'camila@mindblog.com' },
+    category: 'DevOps',
+    readTime: '7min',
+    views: 410,
+    likes: 98
   },
   {
     id: 5,
-    title: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
-    content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam in augue ligula. Donec sed eros vel lacus condimentum sollicitudin...',
-    bannerImage: null,
-    publishedAt: '2025-10-04T08:00:00.000Z',
-    author: { name: 'John Doe', email: 'john@example.com' },
+    title: 'Segurança em Aplicações Web: Hashing com Bcrypt e Tokens JWT',
+    content: 'Aprenda como implementar mecanismos robustos de segurança, evitando o armazenamento de senhas em texto puro e protegendo rotas privadas...',
+    bannerImage: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=800&q=80',
+    publishedAt: '2026-07-16T08:00:00.000Z',
+    author: { name: 'Diego Oliveira', email: 'diego@mindblog.com' },
     category: 'DevOps',
-    readTime: '4min',
-    views: 95,
-    likes: 30
+    readTime: '5min',
+    views: 195,
+    likes: 47
   },
   {
     id: 6,
-    title: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
-    content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam in augue ligula. Donec sed eros vel lacus condimentum sollicitudin...',
-    bannerImage: null,
-    publishedAt: '2025-10-04T07:00:00.000Z',
-    author: { name: 'John Doe', email: 'john@example.com' },
+    title: 'O Impacto da Inteligência Artificial na Produtividade de Desenvolvedores',
+    content: 'Análise detalhada sobre como assistentes de código com IA estão transformando a rotina de engenharia de software e acelerando a entrega de projetos...',
+    bannerImage: 'https://images.unsplash.com/photo-1516116211223-4c7141326c65?auto=format&fit=crop&w=800&q=80',
+    publishedAt: '2026-07-15T07:00:00.000Z',
+    author: { name: 'Beatriz Lima', email: 'beatriz@mindblog.com' },
     category: 'Inteligência Artificial',
     readTime: '8min',
-    views: 310,
-    likes: 75
+    views: 630,
+    likes: 185
   }
 ];
 
@@ -114,16 +114,16 @@ export const Home = () => {
       .then((res) => res.json())
       .then((data) => {
         if (Array.isArray(data) && data.length > 0) {
-          // Adiciona propriedades simuladas para os posts carregados da API do banco de dados
+          // Processa os artigos reais calculando métricas reais de tempo, views e likes
           const enriched = data.map((art: any) => {
-            const wordCount = art.content ? art.content.split(/\s+/).length : 0;
-            const readMinutes = Math.max(1, Math.ceil(wordCount / 200));
+            const stats = getRealArticleStats(art);
             return {
               ...art,
               category: art.category || ['Desenvolvimento web', 'DevOps', 'Inteligência Artificial'][(art.id * 3) % 3],
-              readTime: `${readMinutes}min`,
-              views: art.views || (art.id * 143) % 1000,
-              likes: art.likes || (art.id * 7) % 89,
+              readTime: stats.readTime,
+              views: stats.views,
+              likes: stats.likes,
+              bannerImage: stats.bannerImage,
             };
           });
           setArticles(enriched);
@@ -220,13 +220,7 @@ export const Home = () => {
           <div className="articles-grid featured-grid">
             {highlightedArticles.map((art) => (
               <article key={art.id} className="article-card featured-card">
-                {art.bannerImage ? (
-                  <img src={art.bannerImage} alt={art.title} className="card-image" />
-                ) : (
-                  <div className="card-image-placeholder">
-                    <span>Lorem ipsum</span>
-                  </div>
-                )}
+                <img src={art.bannerImage || DEFAULT_BANNER} alt={art.title} className="card-image" />
                 
                 <div className="card-content">
                   <div className="card-meta-top">
