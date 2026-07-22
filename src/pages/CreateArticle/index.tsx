@@ -16,6 +16,7 @@ export const CreateArticle = () => {
   const [excerpt, setExcerpt] = useState('');
   const [category, setCategory] = useState('Desenvolvimento web');
   const [bannerImage, setBannerImage] = useState('');
+  const [bannerFile, setBannerFile] = useState<File | null>(null);
   const [tagInput, setTagInput] = useState('');
   const [tags, setTags] = useState<string[]>(['Typescript', 'Backend', 'IA']);
   const [content, setContent] = useState('');
@@ -77,6 +78,7 @@ export const CreateArticle = () => {
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
+      setBannerFile(file);
       const reader = new FileReader();
       reader.onloadend = () => {
         setBannerImage(reader.result as string);
@@ -109,20 +111,40 @@ export const CreateArticle = () => {
         : `${API_URL}/articles`;
       const method = isEditing ? 'PUT' : 'POST';
 
-      const response = await fetch(url, {
-        method,
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          title,
-          content,
-          bannerImage: bannerImage || null,
-          category,
-          tags,
-        }),
-      });
+      let response;
+      if (bannerFile) {
+        // Envia como FormData para que o multer processe como arquivo no backend
+        const formData = new FormData();
+        formData.append('title', title);
+        formData.append('content', content);
+        formData.append('category', category);
+        formData.append('bannerImage', bannerFile);
+        // Opcional: enviar tags como JSON
+        formData.append('tags', JSON.stringify(tags));
+
+        response = await fetch(url, {
+          method,
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          body: formData,
+        });
+      } else {
+        response = await fetch(url, {
+          method,
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            title,
+            content,
+            bannerImage: bannerImage || null,
+            category,
+            tags,
+          }),
+        });
+      }
 
       if (response.ok) {
         localStorage.setItem('@MindBlog:toastMessage', isEditing ? 'Artigo alterado com sucesso!' : 'Artigo publicado com sucesso!');
@@ -237,6 +259,7 @@ export const CreateArticle = () => {
               onChange={(e) => {
                 if (!bannerImage.startsWith('data:')) {
                   setBannerImage(e.target.value);
+                  setBannerFile(null);
                 }
               }}
             />
@@ -256,7 +279,10 @@ export const CreateArticle = () => {
               {bannerImage && (
                 <button
                   type="button"
-                  onClick={() => setBannerImage('')}
+                  onClick={() => {
+                    setBannerImage('');
+                    setBannerFile(null);
+                  }}
                   className="btn-clear-image"
                   style={{
                     background: 'transparent',
