@@ -1,5 +1,5 @@
 import React from 'react';
-import { FileText } from 'lucide-react';
+import { Image as ImageIcon } from 'lucide-react';
 import './styles.css';
 
 interface ArticleBannerProps {
@@ -16,7 +16,7 @@ export const ArticleBanner: React.FC<ArticleBannerProps> = ({ src, alt, classNam
 
   return (
     <div className={`article-banner-minimalist ${className}`}>
-      <FileText size={34} className="minimalist-banner-icon" />
+      <ImageIcon size={34} className="minimalist-banner-icon" />
       <span className="minimalist-banner-text">MindBlog</span>
     </div>
   );
