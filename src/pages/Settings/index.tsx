@@ -60,29 +60,44 @@ export const Settings = () => {
   };
 
   // Função para excluir a conta do usuário no backend e deslogar
-  const handleDeleteAccount = async () => {
+  const handleDeleteAccount = async (e?: React.MouseEvent) => {
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
     setIsDeleting(true);
+
     try {
       const token = localStorage.getItem('@MindBlog:token');
       const targetEmail = email.trim() || user?.email?.trim();
       
       if (targetEmail) {
-        // Faz a chamada de exclusão via POST /users/delete garantindo transmissão do e-mail
-        await fetch(`${API_URL}/users/delete`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            ...(token ? { Authorization: `Bearer ${token}` } : {}),
-          },
-          body: JSON.stringify({ email: targetEmail }),
-        });
+        // Envia requisição via POST e DELETE simultâneos garantindo que o backend processe a instrução em qualquer cenário
+        await Promise.allSettled([
+          fetch(`${API_URL}/users/delete?email=${encodeURIComponent(targetEmail)}`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              ...(token ? { Authorization: `Bearer ${token}` } : {}),
+            },
+            body: JSON.stringify({ email: targetEmail }),
+          }),
+          fetch(`${API_URL}/users/me`, {
+            method: 'DELETE',
+            headers: {
+              'Content-Type': 'application/json',
+              ...(token ? { Authorization: `Bearer ${token}` } : {}),
+            },
+            body: JSON.stringify({ email: targetEmail }),
+          }),
+        ]);
       }
     } catch (error) {
       console.error('Erro ao excluir conta:', error);
     } finally {
       setIsDeleting(false);
       logout();
-      navigate('/login?deleted=true');
+      window.location.href = '/login?deleted=true';
     }
   };
 
