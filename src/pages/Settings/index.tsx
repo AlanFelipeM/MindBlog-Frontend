@@ -64,13 +64,15 @@ export const Settings = () => {
     setIsDeleting(true);
     try {
       const token = localStorage.getItem('@MindBlog:token');
+      const targetEmail = email.trim() || user?.email?.trim();
+      
       await fetch(`${API_URL}/users/me`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
           ...(token ? { Authorization: `Bearer ${token}` } : {}),
         },
-        body: JSON.stringify({ email: user?.email || email }),
+        body: JSON.stringify({ email: targetEmail }),
       });
     } catch (error) {
       console.error('Erro ao excluir conta:', error);
