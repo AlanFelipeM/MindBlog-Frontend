@@ -50,13 +50,7 @@ export const Login = () => {
         setErrorMessage(data.error || 'Credenciais inválidas. Verifique seu e-mail e senha.');
       }
     } catch (error) {
-      // Fallback para ambiente de testes sem backend ativo
-      login('fake-jwt-token-123', {
-        name: email.split('@')[0] || 'John Doe',
-        email: email || 'johndoe@email.com',
-        avatar: null,
-      });
-      navigate('/');
+      setErrorMessage('Erro ao conectar ao servidor. Verifique suas credenciais e tente novamente.');
     } finally {
       setLoading(false);
     }

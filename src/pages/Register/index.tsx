@@ -76,11 +76,7 @@ export const Register = () => {
         setErrorMessage(data.error || 'Erro ao criar conta. Tente novamente.');
       }
     } catch (error) {
-      // Fallback para ambiente de testes caso o backend esteja indisponível
-      setSuccessMessage('Conta cadastrada com sucesso! Redirecionando para o login...');
-      setTimeout(() => {
-        navigate('/login');
-      }, 1500);
+      setErrorMessage('Erro ao conectar ao servidor. Tente novamente em instantes.');
     } finally {
       setLoading(false);
     }
