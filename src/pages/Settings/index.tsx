@@ -17,6 +17,7 @@ export const Settings = () => {
   const [name, setName] = useState(user?.name || 'John Doe');
   const [email, setEmail] = useState(user?.email || 'example@email.com');
   const [avatar, setAvatar] = useState(user?.avatar || '');
+  const [avatarFile, setAvatarFile] = useState<File | null>(null);
   const [bio, setBio] = useState('Desenvolvedor Full Stack apaixonado por tecnologia e inovação.');
 
   // Estado para controlar a mensagem de feedback de sucesso ao salvar
@@ -38,25 +39,56 @@ export const Settings = () => {
   }, [user]);
 
   // Função para salvar as alterações do formulário de perfil
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Atualiza as informações do usuário no estado global e localStorage
-    const updatedUser = {
-      name,
-      email,
-      avatar: avatar.trim() === '' ? null : avatar.trim(),
-    };
-
-    // Mantém o token atual ativo e atualiza os dados do usuário logado
     const currentToken = localStorage.getItem('@MindBlog:token') || 'fake-jwt-token';
-    login(currentToken, updatedUser);
+    const url = `${API_URL}/users/me`;
 
-    // Exibe notificação de sucesso por 4 segundos
-    setShowSuccessToast(true);
-    setTimeout(() => {
-      setShowSuccessToast(false);
-    }, 4000);
+    try {
+      let response;
+      if (avatarFile) {
+        const formData = new FormData();
+        formData.append('name', name);
+        formData.append('avatar', avatarFile);
+
+        response = await fetch(url, {
+          method: 'PUT',
+          headers: {
+            Authorization: `Bearer ${currentToken}`,
+          },
+          body: formData,
+        });
+      } else {
+        response = await fetch(url, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${currentToken}`,
+          },
+          body: JSON.stringify({
+            name,
+            avatar: avatar.trim() === '' ? null : avatar.trim(),
+          }),
+        });
+      }
+
+      if (response.ok) {
+        const data = await response.json();
+        // Atualiza o contexto com o usuário retornado pelo backend
+        login(currentToken, data.user);
+        
+        // Exibe notificação de sucesso por 4 segundos
+        setShowSuccessToast(true);
+        setTimeout(() => {
+          setShowSuccessToast(false);
+        }, 4000);
+      } else {
+        console.error("Erro ao salvar perfil no backend");
+      }
+    } catch (error) {
+      console.error("Erro de conexão ao salvar perfil:", error);
+    }
   };
 
   // Função para excluir a conta do usuário no backend e deslogar
@@ -154,8 +186,14 @@ export const Settings = () => {
                 type="text"
                 className="form-input"
                 placeholder="https://images.unsplash.com/photo-..."
-                value={avatar}
-                onChange={(e) => setAvatar(e.target.value)}
+                value={avatar.startsWith('data:') ? 'Imagem carregada do seu computador' : avatar}
+                readOnly={avatar.startsWith('data:')}
+                onChange={(e) => {
+                  if (!avatar.startsWith('data:')) {
+                    setAvatar(e.target.value);
+                    setAvatarFile(null);
+                  }
+                }}
               />
 
               {/* Botão / Input para escolher arquivo de foto do computador */}
@@ -170,6 +208,7 @@ export const Settings = () => {
                   onChange={(e) => {
                     const file = e.target.files?.[0];
                     if (file) {
+                      setAvatarFile(file);
                       const reader = new FileReader();
                       reader.onloadend = () => {
                         setAvatar(reader.result as string);
