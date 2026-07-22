@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, User, Mail, CheckCircle, Trash2, X, AlertTriangle } from 'lucide-react';
+import { ArrowLeft, User, Mail, CheckCircle, Trash2, X } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import { API_URL } from '../../config/api';
 import './styles.css';
@@ -238,35 +238,26 @@ export const Settings = () => {
             </div>
           </div>
 
-          {/* Botão de confirmação e salvamento de alterações */}
-          <button type="submit" className="btn-save-settings">
-            Salvar Alterações
-          </button>
-        </form>
-
-        {/* Zona de Perigo: Exclusão de Conta */}
-        <div className="danger-zone-card">
-          <div className="danger-zone-header">
-            <AlertTriangle size={18} className="danger-icon" />
-            <h3>Zona de Perigo</h3>
+          {/* Ações do formulário: Salvar Alterações e Excluir Conta de forma sutil */}
+          <div className="settings-actions-group">
+            <button type="submit" className="btn-save-settings">
+              Salvar Alterações
+            </button>
+            <button
+              type="button"
+              onClick={() => setShowDeleteModal(true)}
+              className="btn-delete-account-subtle"
+            >
+              <Trash2 size={16} /> Excluir Conta
+            </button>
           </div>
-          <p className="danger-zone-text">
-            Ao excluir sua conta, seus dados pessoais e artigos publicados serão permanentemente removidos.
-          </p>
-          <button
-            type="button"
-            onClick={() => setShowDeleteModal(true)}
-            className="btn-danger-delete"
-          >
-            <Trash2 size={16} /> Excluir Conta
-          </button>
-        </div>
+        </form>
       </div>
 
-      {/* Modal de Confirmação de Exclusão de Conta */}
+      {/* Modal Popup Fixo no Centro da Tela para Confirmação de Exclusão */}
       {showDeleteModal && (
-        <div className="modal-overlay">
-          <div className="settings-delete-modal">
+        <div className="settings-modal-overlay" onClick={() => setShowDeleteModal(false)}>
+          <div className="settings-delete-modal" onClick={(e) => e.stopPropagation()}>
             <div className="delete-modal-header">
               <h3>Excluir Conta Permanentemente</h3>
               <button onClick={() => setShowDeleteModal(false)} className="close-modal-icon-btn">

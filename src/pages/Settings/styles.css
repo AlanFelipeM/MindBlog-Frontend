@@ -300,6 +300,14 @@
   color: var(--text-primary);
 }
 
+/* Grupo de Ações do Formulário de Configurações */
+.settings-actions-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+}
+
 /* Botão principal de Salvar Alterações */
 .btn-save-settings {
   width: 100%;
@@ -312,65 +320,56 @@
   border-radius: 0px; /* Cantos 100% retos */
   cursor: pointer;
   transition: background-color var(--transition-fast);
-  margin-top: 1rem;
 }
 
 .btn-save-settings:hover {
   background-color: var(--brand-hover);
 }
 
-/* Zona de Perigo */
-.danger-zone-card {
-  margin-top: 3rem;
-  padding-top: 2rem;
-  border-top: 1px solid rgba(239, 68, 68, 0.25);
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-}
-
-.danger-zone-header {
+.btn-delete-account-subtle {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 0.5rem;
-}
-
-.danger-zone-header h3 {
-  font-size: 1.1rem;
-  font-weight: 600;
+  background-color: transparent;
+  border: 1px solid rgba(239, 68, 68, 0.35);
   color: #F87171;
+  font-size: 0.85rem;
+  font-weight: 500;
+  padding: 0.75rem;
+  border-radius: 0px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  width: 100%;
 }
 
-.danger-icon {
+.btn-delete-account-subtle:hover {
+  background-color: rgba(239, 68, 68, 0.12);
+  border-color: #EF4444;
   color: #EF4444;
 }
 
-.danger-zone-text {
-  font-size: 0.875rem;
-  color: var(--text-secondary);
-  line-height: 1.4;
-}
-
-.btn-danger-delete {
-  align-self: flex-start;
+/* Modal Overlay Popup Fixo no Centro da Tela */
+.settings-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(4px);
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  background-color: rgba(239, 68, 68, 0.12);
-  border: 1px solid rgba(239, 68, 68, 0.4);
-  color: #F87171;
-  font-size: 0.875rem;
-  font-weight: 600;
-  padding: 0.65rem 1.25rem;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  margin-top: 0.5rem;
+  justify-content: center;
+  z-index: 99999;
+  animation: fadeInOverlay 0.2s ease;
 }
 
-.btn-danger-delete:hover {
-  background-color: #EF4444;
-  color: #FFFFFF;
+@keyframes fadeInOverlay {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 /* Modal de Exclusão de Conta */
@@ -379,10 +378,21 @@
   border: 1px solid var(--border-color);
   border-radius: 8px;
   width: 90%;
-  max-width: 480px;
+  max-width: 460px;
   padding: 1.75rem;
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
-  animation: modalFadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+  animation: modalScaleUp 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes modalScaleUp {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
 }
 
 .delete-modal-header {
