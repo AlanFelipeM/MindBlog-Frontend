@@ -47,7 +47,13 @@ export const Login = () => {
         // Redireciona o usuário para a página inicial
         navigate('/');
       } else {
-        setErrorMessage(data.error || 'Credenciais inválidas. Verifique seu e-mail e senha.');
+        const rawErr = String(data.error || '');
+        const isTechnical = rawErr.includes('prisma') || rawErr.includes('database') || rawErr.includes('Can\'t reach') || rawErr.includes('invocation');
+        setErrorMessage(
+          isTechnical 
+            ? 'Servidor de banco de dados temporariamente indisponível. Tente novamente em instantes.' 
+            : (data.error || 'Credenciais inválidas. Verifique seu e-mail e senha.')
+        );
       }
     } catch (error) {
       setErrorMessage('Erro ao conectar ao servidor. Verifique suas credenciais e tente novamente.');

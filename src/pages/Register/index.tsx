@@ -73,7 +73,13 @@ export const Register = () => {
           navigate('/login');
         }, 1500);
       } else {
-        setErrorMessage(data.error || 'Erro ao criar conta. Tente novamente.');
+        const rawErr = String(data.error || '');
+        const isTechnical = rawErr.includes('prisma') || rawErr.includes('database') || rawErr.includes('Can\'t reach') || rawErr.includes('invocation');
+        setErrorMessage(
+          isTechnical 
+            ? 'Servidor de banco de dados temporariamente indisponível. Tente novamente em instantes.' 
+            : (data.error || 'Erro ao criar conta. Tente novamente.')
+        );
       }
     } catch (error) {
       setErrorMessage('Erro ao conectar ao servidor. Tente novamente em instantes.');
