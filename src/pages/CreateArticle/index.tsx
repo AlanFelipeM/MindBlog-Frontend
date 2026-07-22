@@ -155,15 +155,11 @@ export const CreateArticle = () => {
         localStorage.setItem('@MindBlog:toastMessage', isEditing ? 'Artigo alterado com sucesso!' : 'Artigo publicado com sucesso!');
         navigate('/dashboard');
       } else {
-        await response.json();
-        // Fallback local caso o backend responda com erro
-        localStorage.setItem('@MindBlog:toastMessage', isEditing ? 'Artigo alterado com sucesso!' : 'Artigo publicado com sucesso!');
-        navigate('/dashboard');
+        const errorData = await response.json().catch(() => ({}));
+        setErrorMessage(errorData.error || 'Erro ao salvar o artigo no servidor. Tente novamente.');
       }
     } catch (error) {
-      // Redireciona para o dashboard com mensagem de sucesso
-      localStorage.setItem('@MindBlog:toastMessage', isEditing ? 'Artigo alterado com sucesso!' : 'Artigo publicado com sucesso!');
-      navigate('/dashboard');
+      setErrorMessage('Erro de conexão ao salvar o artigo. Tente novamente.');
     } finally {
       setLoading(false);
     }
@@ -253,7 +249,7 @@ export const CreateArticle = () => {
             </select>
           </div>
 
-          {/* Campo 4: Imagem de Capa (URL + Upload de arquivo do PC) */}
+          {/* Campo 4: Imagem de Capa (URL + Upload de arquivo do PC + Pré-visualização) */}
           <div className="article-form-group">
             <label htmlFor="articleCover" className="article-form-label">
               Imagem de Capa *
@@ -262,8 +258,8 @@ export const CreateArticle = () => {
               id="articleCover"
               type="text"
               className="article-form-input"
-              placeholder="uploads/2026/01/inteligencia_artigo_ia.png ou cole uma URL..."
-              value={bannerImage}
+              placeholder="Cole uma URL de imagem ou selecione um arquivo abaixo..."
+              value={bannerImage.startsWith('data:') ? '📷 Imagem carregada do seu computador' : bannerImage}
               onChange={(e) => setBannerImage(e.target.value)}
             />
             
@@ -299,6 +295,17 @@ export const CreateArticle = () => {
                 </button>
               )}
             </div>
+
+            {/* Pré-visualização ao vivo da foto de capa */}
+            {bannerImage && (
+              <div style={{ marginTop: '12px', borderRadius: '10px', overflow: 'hidden', maxHeight: '180px', border: '1px solid rgba(255, 255, 255, 0.1)' }}>
+                <img 
+                  src={bannerImage} 
+                  alt="Pré-visualização da capa" 
+                  style={{ width: '100%', height: '180px', objectFit: 'cover', display: 'block' }}
+                />
+              </div>
+            )}
           </div>
 
           {/* Campo 5: Tags interativas */}
