@@ -17,7 +17,6 @@ export const Settings = () => {
   const [name, setName] = useState(user?.name || 'John Doe');
   const [email, setEmail] = useState(user?.email || 'example@email.com');
   const [avatar, setAvatar] = useState(user?.avatar || '');
-  const [avatarFile, setAvatarFile] = useState<File | null>(null);
   const [bio, setBio] = useState('Desenvolvedor Full Stack apaixonado por tecnologia e inovação.');
 
   // Estado para controlar a mensagem de feedback de sucesso ao salvar
@@ -176,7 +175,6 @@ export const Settings = () => {
                 onChange={(e) => {
                   if (!avatar.startsWith('data:')) {
                     setAvatar(e.target.value);
-                    setAvatarFile(null);
                   }
                 }}
               />
@@ -193,7 +191,6 @@ export const Settings = () => {
                   onChange={(e) => {
                     const file = e.target.files?.[0];
                     if (file) {
-                      setAvatarFile(file);
                       const reader = new FileReader();
                       reader.onloadend = () => {
                         setAvatar(reader.result as string);
